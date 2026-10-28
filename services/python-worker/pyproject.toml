@@ -1,0 +1,6 @@
+[project]
+name = "vislang-worker"
+version = "0.2.0"
+requires-python = ">=3.11"
+description = "Read-only static LangGraph source analyzer"
+dependencies = []

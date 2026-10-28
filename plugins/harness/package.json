@@ -1,0 +1,48 @@
+{
+  "name": "vis4agent",
+  "version": "0.6.7",
+  "private": true,
+  "description": "LangGraph visual development plugin for DeepSeek Harness: source graphs, current-session AI explanations, reviewed editing and undo.",
+  "type": "module",
+  "main": "./lib/index.js",
+  "exports": {
+    ".": "./lib/index.js",
+    "./client": "./client/client.js",
+    "./cordis.patch.yml": "./cordis.patch.yml",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "lib",
+    "client",
+    "cordis.patch.yml"
+  ],
+  "keywords": [
+    "dsh-plugin",
+    "deepseek-harness",
+    "dsh",
+    "langgraph",
+    "ai-agents",
+    "multi-agent",
+    "visualization",
+    "developer-tools"
+  ],
+  "license": "MIT",
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "platform": "web",
+      "inject": []
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Cantarella-Fisalia/vis4agent.git",
+    "directory": "plugins/harness"
+  },
+  "homepage": "https://github.com/Cantarella-Fisalia/vis4agent#readme",
+  "bugs": {
+    "url": "https://github.com/Cantarella-Fisalia/vis4agent/issues"
+  }
+}

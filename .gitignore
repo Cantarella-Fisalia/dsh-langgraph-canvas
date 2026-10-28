@@ -1,0 +1,44 @@
+# 本地验证产物，不入库
+.tmp/
+.dsh-test/
+.pnpm-store/
+
+# 依赖
+node_modules/
+
+# P1 构建与本地运行产物
+apps/frontend/dist/
+__pycache__/
+*.py[cod]
+examples/**/.vislang/
+
+# 插件本地行为任务回执
+.vislang/
+
+# Credentials and machine-local settings
+.env
+.env.*
+!.env.example
+!.env.template
+*.pem
+*.key
+*.p12
+*.pfx
+*.log
+*.pid
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+.codex/
+.claude/
+
+# Local Harness overlay and acceptance captures (kept on this machine)
+plugins/harness/dev.patch.yml
+docs/evidence/
+docs/handoffs/**/*.png
+docs/handoffs/**/*.jpg
+docs/handoffs/**/*.jpeg
+docs/handoffs/**/*.json
+docs/handoffs/**/*.txt
+docs/handoffs/**/*-dom.md
