@@ -11,7 +11,7 @@ export function startServer(port = Number(environmentValue('PORT') || 4318)) {
     }
     if (!(await app.handler(req, res))) { res.writeHead(404); res.end('Not found'); }
   });
-  server.listen(port, '127.0.0.1', () => console.log('langcontour API: http://127.0.0.1:' + (server.address() as any).port + '/api/v1'));
+  server.listen(port, '127.0.0.1', () => console.log('dsh-langgraph-canvas API: http://127.0.0.1:' + (server.address() as any).port + '/api/v1'));
   const stop = () => { app.close(); server.close(); };
   process.once('SIGINT', stop); process.once('SIGTERM', stop);
   return { server, stop };

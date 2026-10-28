@@ -1,6 +1,6 @@
 {
-  "name": "langcontour-workspace",
-  "version": "0.3.0",
+  "name": "dsh-langgraph-canvas-workspace",
+  "version": "0.4.0",
   "private": true,
   "type": "module",
   "engines": {
@@ -27,7 +27,7 @@
     "typescript": "^5.9.0",
     "vite": "^7.1.0"
   },
-  "description": "LangGraph visual development plugin for DeepSeek Harness: source graphs, current-session AI explanations, reviewed editing and undo.",
+  "description": "Unofficial community LangGraph canvas plugin for DeepSeek Harness. Independently maintained; not affiliated with or endorsed by DeepSeek or LangChain.",
   "keywords": [
     "dsh-plugin",
     "deepseek-harness",
@@ -41,10 +41,10 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/Cantarella-Fisalia/langcontour.git"
+    "url": "https://github.com/Cantarella-Fisalia/dsh-langgraph-canvas.git"
   },
-  "homepage": "https://github.com/Cantarella-Fisalia/langcontour#readme",
+  "homepage": "https://github.com/Cantarella-Fisalia/dsh-langgraph-canvas#readme",
   "bugs": {
-    "url": "https://github.com/Cantarella-Fisalia/langcontour/issues"
+    "url": "https://github.com/Cantarella-Fisalia/dsh-langgraph-canvas/issues"
   }
 }

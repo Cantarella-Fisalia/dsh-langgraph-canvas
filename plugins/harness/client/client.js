@@ -5,11 +5,11 @@
 ;(function () {
   var loader = window.__ModuleLoader__
   if (!loader || typeof loader.load !== 'function') return
-  var API_BASE = '/langcontour/api/v1'
-  var APP_PATH = '/langcontour/app/?embedded=1&apiBase=' + encodeURIComponent(API_BASE)
+  var API_BASE = '/dsh-langgraph-canvas/api/v1'
+  var APP_PATH = '/dsh-langgraph-canvas/app/?embedded=1&apiBase=' + encodeURIComponent(API_BASE)
 
   loader.load({
-    id: 'langcontour',
+    id: 'dsh-langgraph-canvas',
     factory: function (require) {
       var React = require('react')
       var h = React.createElement
@@ -59,7 +59,7 @@
           var child = frame.current && frame.current.contentWindow
           if (!child) return
           child.postMessage({
-            type: 'langcontour:host-context',
+            type: 'dsh-langgraph-canvas:host-context',
             schemaVersion: 1,
             workspaceRoot: root,
             sessionId: sessionId || null,
@@ -70,7 +70,7 @@
         useEffect(function () {
           function ready(event) {
             if (!frame.current || event.source !== frame.current.contentWindow || !sameOrigin(event)) return
-            if (event.data && event.data.type === 'langcontour:ready' && event.data.schemaVersion === 1) publish()
+            if (event.data && event.data.type === 'dsh-langgraph-canvas:ready' && event.data.schemaVersion === 1) publish()
           }
           window.addEventListener('message', ready)
           // Theme presenter may commit CSS variables after the theme/change event.
@@ -82,7 +82,7 @@
         }, [publish])
 
         return h('section', {
-          'data-langcontour-native-view': '',
+          'data-dsh-langgraph-canvas-native-view': '',
           style: {
             display: 'flex', flex: '1 1 auto', width: '100%', minWidth: 0,
             height: '100%', minHeight: 360,
@@ -125,6 +125,7 @@
         }, [])
         return h('div', { style: { fontSize: 13, lineHeight: 1.8, color: 'var(--dsw-alias-label-primary)' } },
           h('strong', null, 'LangGraph 架构'),
+          h('p', null, '独立社区插件；与 DeepSeek、LangChain 官方无隶属或背书关系。'),
           h('p', { style: { color: 'var(--dsw-alias-label-secondary)' } }, status),
           h('p', null, '在「对话／轨迹」旁选择「架构」；空白会话点击顶部「◇ 架构」。目录与当前工作区共用，主题跟随 Harness。'),
         )
@@ -140,7 +141,7 @@
         function openArchitecture(sessionId) {
           focusedSession = sessionId
           focusListeners.forEach(function (listener) { listener() })
-          ctx.layout.selectPanel('langcontour.architecture')
+          ctx.layout.selectPanel('dsh-langgraph-canvas.architecture')
         }
         var themeSource = {
           getSnapshot: function () { return ctx.theme.getTheme() },
@@ -148,31 +149,31 @@
         }
         ctx.slots.inject('conversation.view', function () {
           return ctx.slots.register({
-            name: 'conversation.view', id: 'langcontour', order: 20,
+            name: 'conversation.view', id: 'dsh-langgraph-canvas', order: 20,
             label: function () { return '架构' },
             inject: function () { return { themeSource: themeSource } },
           }, ArchitectureView)
         })
         ctx.slots.inject('main', function () {
           return ctx.slots.register({
-            name: 'main', key: 'langcontour.architecture',
+            name: 'main', key: 'dsh-langgraph-canvas.architecture',
             inject: function () { return { themeSource: themeSource, focusSource: focusSource } },
           }, ArchitectureView)
         })
         ctx.slots.inject('conversation.header.leading', function () {
           return ctx.slots.register({
-            name: 'conversation.header.leading', id: 'langcontour-entry',
+            name: 'conversation.header.leading', id: 'dsh-langgraph-canvas-entry',
             inject: function () { return { openArchitecture: openArchitecture } },
           }, ArchitectureEntry)
         })
         ctx.slots.inject('settings.section', function () {
           return ctx.slots.register({
-            name: 'settings.section', id: 'langcontour', order: 40,
-            label: function () { return '图廓 · LangGraph 架构' },
+            name: 'settings.section', id: 'dsh-langgraph-canvas', order: 40,
+            label: function () { return 'LangGraph Canvas（非官方）' },
           }, StatusPanel)
         })
       }
-      return { name: 'langcontour', inject: ['slots', 'theme', 'layout'], apply: apply }
+      return { name: 'dsh-langgraph-canvas', inject: ['slots', 'theme', 'layout'], apply: apply }
     },
   })
 })()

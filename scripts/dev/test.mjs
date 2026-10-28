@@ -20,7 +20,7 @@ try {
   const python = await probePython(resolvePythonCommand(), { cwd: root });
   console.log(`Python ${python.version}: ${python.executable}`);
   // Both Node-created workers and the unittest process receive exactly the validated executable.
-  const env = { ...process.env, LANGCONTOUR_PYTHON: python.executable, PYTHONIOENCODING: 'utf-8', PYTHONDONTWRITEBYTECODE: '1' };
+  const env = { ...process.env, DSH_LANGGRAPH_CANVAS_PYTHON: python.executable, PYTHONIOENCODING: 'utf-8', PYTHONDONTWRITEBYTECODE: '1' };
   const run = (command, args) => new Promise(resolve => {
     const child = spawn(command, args, { cwd: root, env, stdio: 'inherit', windowsHide: true });
     child.on('error', error => { console.error(error.message); resolve(1); });

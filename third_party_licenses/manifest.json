@@ -1,0 +1,240 @@
+{
+  "date": "2026-10-28",
+  "scope": "Non-dev entries in package-lock.json; conservative inventory, includes type packages",
+  "packages": [
+    {
+      "name": "@types/d3-color",
+      "version": "3.1.3",
+      "license": "MIT",
+      "source": "https://github.com/DefinitelyTyped/DefinitelyTyped.git",
+      "path": "node_modules/@types/d3-color",
+      "licenseFile": "third_party_licenses/types__d3-color.txt",
+      "sha256": "c2cfccb812fe482101a8f04597dfc5a9991a6b2748266c47ac91b6a5aae15383"
+    },
+    {
+      "name": "@types/d3-drag",
+      "version": "3.0.7",
+      "license": "MIT",
+      "source": "https://github.com/DefinitelyTyped/DefinitelyTyped.git",
+      "path": "node_modules/@types/d3-drag",
+      "licenseFile": "third_party_licenses/types__d3-drag.txt",
+      "sha256": "c2cfccb812fe482101a8f04597dfc5a9991a6b2748266c47ac91b6a5aae15383"
+    },
+    {
+      "name": "@types/d3-interpolate",
+      "version": "3.0.4",
+      "license": "MIT",
+      "source": "https://github.com/DefinitelyTyped/DefinitelyTyped.git",
+      "path": "node_modules/@types/d3-interpolate",
+      "licenseFile": "third_party_licenses/types__d3-interpolate.txt",
+      "sha256": "c2cfccb812fe482101a8f04597dfc5a9991a6b2748266c47ac91b6a5aae15383"
+    },
+    {
+      "name": "@types/d3-selection",
+      "version": "3.0.12",
+      "license": "MIT",
+      "source": "https://github.com/DefinitelyTyped/DefinitelyTyped.git",
+      "path": "node_modules/@types/d3-selection",
+      "licenseFile": "third_party_licenses/types__d3-selection.txt",
+      "sha256": "c2cfccb812fe482101a8f04597dfc5a9991a6b2748266c47ac91b6a5aae15383"
+    },
+    {
+      "name": "@types/d3-transition",
+      "version": "3.0.9",
+      "license": "MIT",
+      "source": "https://github.com/DefinitelyTyped/DefinitelyTyped.git",
+      "path": "node_modules/@types/d3-transition",
+      "licenseFile": "third_party_licenses/types__d3-transition.txt",
+      "sha256": "c2cfccb812fe482101a8f04597dfc5a9991a6b2748266c47ac91b6a5aae15383"
+    },
+    {
+      "name": "@types/d3-zoom",
+      "version": "3.0.9",
+      "license": "MIT",
+      "source": "https://github.com/DefinitelyTyped/DefinitelyTyped.git",
+      "path": "node_modules/@types/d3-zoom",
+      "licenseFile": "third_party_licenses/types__d3-zoom.txt",
+      "sha256": "c2cfccb812fe482101a8f04597dfc5a9991a6b2748266c47ac91b6a5aae15383"
+    },
+    {
+      "name": "@types/react",
+      "version": "19.3.0",
+      "license": "MIT",
+      "source": "https://github.com/DefinitelyTyped/DefinitelyTyped.git",
+      "path": "node_modules/@types/react",
+      "licenseFile": "third_party_licenses/types__react.txt",
+      "sha256": "c2cfccb812fe482101a8f04597dfc5a9991a6b2748266c47ac91b6a5aae15383"
+    },
+    {
+      "name": "@types/react-dom",
+      "version": "19.3.0",
+      "license": "MIT",
+      "source": "https://github.com/DefinitelyTyped/DefinitelyTyped.git",
+      "path": "node_modules/@types/react-dom",
+      "licenseFile": "third_party_licenses/types__react-dom.txt",
+      "sha256": "c2cfccb812fe482101a8f04597dfc5a9991a6b2748266c47ac91b6a5aae15383"
+    },
+    {
+      "name": "@xyflow/react",
+      "version": "12.12.0",
+      "license": "MIT",
+      "source": "https://github.com/xyflow/xyflow.git",
+      "path": "node_modules/@xyflow/react",
+      "licenseFile": "third_party_licenses/xyflow__react.txt",
+      "sha256": "023119ac20fb1c8c9930abe0bcd196989a1960388529a96fc43cebf96f07c9ff"
+    },
+    {
+      "name": "@xyflow/system",
+      "version": "0.0.83",
+      "license": "MIT",
+      "source": "https://github.com/xyflow/xyflow.git",
+      "path": "node_modules/@xyflow/system",
+      "licenseFile": "third_party_licenses/xyflow__system.txt",
+      "sha256": "023119ac20fb1c8c9930abe0bcd196989a1960388529a96fc43cebf96f07c9ff"
+    },
+    {
+      "name": "classcat",
+      "version": "5.0.5",
+      "license": "MIT",
+      "source": "jorgebucaran/classcat",
+      "path": "node_modules/classcat",
+      "licenseFile": "third_party_licenses/classcat.txt",
+      "sha256": "f101c761d255d0dddc77dd8a9327733b03d381798ec54a1bb718367207b48a8e"
+    },
+    {
+      "name": "csstype",
+      "version": "3.2.3",
+      "license": "MIT",
+      "source": "https://github.com/frenic/csstype",
+      "path": "node_modules/csstype",
+      "licenseFile": "third_party_licenses/csstype.txt",
+      "sha256": "11d55bd4541c75ee7879547ac49089c489163dae49551389713c3d026cab383e"
+    },
+    {
+      "name": "d3-color",
+      "version": "3.1.0",
+      "license": "ISC",
+      "source": "https://github.com/d3/d3-color.git",
+      "path": "node_modules/d3-color",
+      "licenseFile": "third_party_licenses/d3-color.txt",
+      "sha256": "faa682e3e430941f958d26180458f5934a62f58dac4d70ccdd15608c15d0f884"
+    },
+    {
+      "name": "d3-dispatch",
+      "version": "3.0.1",
+      "license": "ISC",
+      "source": "https://github.com/d3/d3-dispatch.git",
+      "path": "node_modules/d3-dispatch",
+      "licenseFile": "third_party_licenses/d3-dispatch.txt",
+      "sha256": "e008c5e25a6be382593089c29bfabbc553c6378eee02895aec46ce396cc404ee"
+    },
+    {
+      "name": "d3-drag",
+      "version": "3.0.0",
+      "license": "ISC",
+      "source": "https://github.com/d3/d3-drag.git",
+      "path": "node_modules/d3-drag",
+      "licenseFile": "third_party_licenses/d3-drag.txt",
+      "sha256": "e008c5e25a6be382593089c29bfabbc553c6378eee02895aec46ce396cc404ee"
+    },
+    {
+      "name": "d3-ease",
+      "version": "3.0.1",
+      "license": "BSD-3-Clause",
+      "source": "https://github.com/d3/d3-ease.git",
+      "path": "node_modules/d3-ease",
+      "licenseFile": "third_party_licenses/d3-ease.txt",
+      "sha256": "b989d9085148d21ff64a75e14462aefa06b2589a55553b07b1460c70081c7d08"
+    },
+    {
+      "name": "d3-interpolate",
+      "version": "3.0.1",
+      "license": "ISC",
+      "source": "https://github.com/d3/d3-interpolate.git",
+      "path": "node_modules/d3-interpolate",
+      "licenseFile": "third_party_licenses/d3-interpolate.txt",
+      "sha256": "e008c5e25a6be382593089c29bfabbc553c6378eee02895aec46ce396cc404ee"
+    },
+    {
+      "name": "d3-selection",
+      "version": "3.0.0",
+      "license": "ISC",
+      "source": "https://github.com/d3/d3-selection.git",
+      "path": "node_modules/d3-selection",
+      "licenseFile": "third_party_licenses/d3-selection.txt",
+      "sha256": "e008c5e25a6be382593089c29bfabbc553c6378eee02895aec46ce396cc404ee"
+    },
+    {
+      "name": "d3-timer",
+      "version": "3.0.1",
+      "license": "ISC",
+      "source": "https://github.com/d3/d3-timer.git",
+      "path": "node_modules/d3-timer",
+      "licenseFile": "third_party_licenses/d3-timer.txt",
+      "sha256": "e008c5e25a6be382593089c29bfabbc553c6378eee02895aec46ce396cc404ee"
+    },
+    {
+      "name": "d3-transition",
+      "version": "3.0.1",
+      "license": "ISC",
+      "source": "https://github.com/d3/d3-transition.git",
+      "path": "node_modules/d3-transition",
+      "licenseFile": "third_party_licenses/d3-transition.txt",
+      "sha256": "e008c5e25a6be382593089c29bfabbc553c6378eee02895aec46ce396cc404ee"
+    },
+    {
+      "name": "d3-zoom",
+      "version": "3.0.0",
+      "license": "ISC",
+      "source": "https://github.com/d3/d3-zoom.git",
+      "path": "node_modules/d3-zoom",
+      "licenseFile": "third_party_licenses/d3-zoom.txt",
+      "sha256": "e008c5e25a6be382593089c29bfabbc553c6378eee02895aec46ce396cc404ee"
+    },
+    {
+      "name": "react",
+      "version": "19.3.1",
+      "license": "MIT",
+      "source": "https://github.com/react/react.git",
+      "path": "node_modules/react",
+      "licenseFile": "third_party_licenses/react.txt",
+      "sha256": "da6d3703ed11cbe42bd212c725957c98da23cbff1998c05fa4b3d976d1a58e93"
+    },
+    {
+      "name": "react-dom",
+      "version": "19.3.1",
+      "license": "MIT",
+      "source": "https://github.com/react/react.git",
+      "path": "node_modules/react-dom",
+      "licenseFile": "third_party_licenses/react-dom.txt",
+      "sha256": "da6d3703ed11cbe42bd212c725957c98da23cbff1998c05fa4b3d976d1a58e93"
+    },
+    {
+      "name": "scheduler",
+      "version": "0.28.0",
+      "license": "MIT",
+      "source": "https://github.com/react/react.git",
+      "path": "node_modules/scheduler",
+      "licenseFile": "third_party_licenses/scheduler.txt",
+      "sha256": "da6d3703ed11cbe42bd212c725957c98da23cbff1998c05fa4b3d976d1a58e93"
+    },
+    {
+      "name": "use-sync-external-store",
+      "version": "1.7.0",
+      "license": "MIT",
+      "source": "https://github.com/react/react.git",
+      "path": "node_modules/use-sync-external-store",
+      "licenseFile": "third_party_licenses/use-sync-external-store.txt",
+      "sha256": "da6d3703ed11cbe42bd212c725957c98da23cbff1998c05fa4b3d976d1a58e93"
+    },
+    {
+      "name": "zustand",
+      "version": "4.5.7",
+      "license": "MIT",
+      "source": "git+https://github.com/pmndrs/zustand.git",
+      "path": "node_modules/zustand",
+      "licenseFile": "third_party_licenses/zustand.txt",
+      "sha256": "c1e6e266563517467b1bf874817d23e426f3149252bd7d42758cd697514b8417"
+    }
+  ]
+}

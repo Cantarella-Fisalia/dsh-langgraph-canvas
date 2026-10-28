@@ -22,8 +22,8 @@ async function removeOwned(path, prefix) {
   await rm(target, { recursive: true, force: true })
 }
 async function fixture(stream, { bom = false, crlf = false, legacy = false } = {}) {
-  const state = await mkdtemp(join(tmpdir(), 'langcontour-adapter-test-'))
-  const prefix = legacy ? 'vis4agent' : 'langcontour'
+  const state = await mkdtemp(join(tmpdir(), 'dsh-langgraph-canvas-adapter-test-'))
+  const prefix = legacy === 'langcontour' ? 'langcontour' : legacy ? 'vis4agent' : 'dsh-langgraph-canvas'
   const workspace = await mkdtemp(join(tmpdir(), prefix + '-behavior-'))
   const id = 'a'.repeat(32)
   await writeFile(join(workspace, '.' + prefix + '-owner.json'), JSON.stringify({ taskId: id, token: 'b'.repeat(48) }))
@@ -46,7 +46,7 @@ async function fixture(stream, { bom = false, crlf = false, legacy = false } = {
       }
       assert.fail('Adapter did not reach ' + status)
     },
-    async close() { await adapter.close(); await removeOwned(workspace, prefix + '-behavior-'); await removeOwned(state, 'langcontour-adapter-test-') },
+    async close() { await adapter.close(); await removeOwned(workspace, prefix + '-behavior-'); await removeOwned(state, 'dsh-langgraph-canvas-adapter-test-') },
   }
 }
 function successfulStream(content, onRequest = () => {}) {
@@ -73,6 +73,16 @@ test('legacy owned workspaces and terminal journal IDs remain readable without a
   assert.equal(result.status, 'succeeded'); assert.equal(result.hostTaskId, record.hostTaskId); assert.equal(calls, 1);
 });
 
+test('LangContour workspace ownership and journal IDs survive the user-selected final name', async t => {
+  let calls = 0;
+  const f = await fixture(successfulStream(edited, () => { calls++; }), { legacy: 'langcontour' }); t.after(() => f.close());
+  await f.adapter.submit(f.assignment, f.rpc); await f.until('succeeded');
+  const path = join(f.options.storeRoot, f.assignment.taskId + '.json'), record = JSON.parse(await readFile(path, 'utf8'));
+  record.hostTaskId = 'langcontour-' + f.assignment.taskId; await writeFile(path, JSON.stringify(record));
+  const value = await f.adapter.getStatus({ ...f.handle, hostTaskId: record.hostTaskId }, f.rpc);
+  assert.equal(value.status, 'succeeded'); assert.equal(value.hostTaskId, record.hostTaskId); assert.equal(calls, 1);
+});
+
 test('live readiness follows Harness services and current conversation without model I/O', async () => {
   const adapter = createHarnessBehaviorAdapter({ get: () => undefined }, { repoRoot })
   assert.equal((await adapter.support(session)).available, false)
@@ -94,7 +104,7 @@ test('durable adapter admission deduplicates; stream uses no tools; BOM and CRLF
   }), { bom: true, crlf: true })
   try {
     const [a, b] = await Promise.all([f.adapter.submit(f.assignment, f.rpc), f.adapter.submit(f.assignment, f.rpc)])
-    assert.deepEqual(a, b); assert.equal(a.hostTaskId, 'langcontour-' + f.handle.taskId)
+    assert.deepEqual(a, b); assert.equal(a.hostTaskId, 'dsh-langgraph-canvas-' + f.handle.taskId)
     await f.until('succeeded'); assert.equal(calls, 1)
     assert.deepEqual(await readFile(join(f.workspace, 'graph.py')), Buffer.from('\uFEFF' + edited.replaceAll('\n', '\r\n')))
     const restarted = createHarnessBehaviorAdapter(f.ctx, f.options)
@@ -163,7 +173,7 @@ test('unknown records never start generation; original directories and changed t
 })
 
 test('actual adapter through application: explicit task, static result review, confirmed apply and exact undo', async () => {
-  const state = await mkdtemp(join(tmpdir(), 'langcontour-adapter-test-'))
+  const state = await mkdtemp(join(tmpdir(), 'dsh-langgraph-canvas-adapter-test-'))
   const project = join(state, 'project'); await mkdir(project); await writeFile(join(project, 'graph.py'), source)
   let calls = 0
   const adapter = createHarnessBehaviorAdapter(context(successfulStream(edited, () => { ++calls }), project), { repoRoot, storeRoot: join(state, 'records') })
@@ -208,7 +218,7 @@ test('actual adapter through application: explicit task, static result review, c
     assert.equal(await readFile(join(project, 'graph.py'), 'utf8'), source)
   } finally {
     await adapter.close(); app.close(); server.closeAllConnections(); await new Promise(done => server.close(done))
-    await removeOwned(state, 'langcontour-adapter-test-')
+    await removeOwned(state, 'dsh-langgraph-canvas-adapter-test-')
   }
 })
 
@@ -219,7 +229,7 @@ test('stopped process records recover without redispatch; close during admission
     await mkdir(f.options.storeRoot, { recursive: true })
     const id = f.handle.taskId
     // PID 0 is deliberately invalid: probe must not accidentally signal a process group.
-    const record = { schemaVersion: 1, id, hostTaskId: 'langcontour-' + id, pid: 2147483647,
+    const record = { schemaVersion: 1, id, hostTaskId: 'dsh-langgraph-canvas-' + id, pid: 2147483647,
       status: 'running', createdAt: new Date().toISOString() }
     await writeFile(join(f.options.storeRoot, id + '.json'), JSON.stringify(record))
     assert.equal((await f.adapter.getStatus(f.handle, f.rpc)).status, 'failed')

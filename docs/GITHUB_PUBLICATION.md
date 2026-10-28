@@ -1,6 +1,6 @@
-# LangContour GitHub 公开发布
+# dsh-langgraph-canvas GitHub 公开发布
 
-项目仓库：https://github.com/Cantarella-Fisalia/langcontour。发布账号：Cantarella-Fisalia。日期：2026-10-28。
+项目仓库：https://github.com/Cantarella-Fisalia/dsh-langgraph-canvas。发布账号：Cantarella-Fisalia。日期：2026-10-28。
 
 DeepSeek Harness 官方 README 的 Community and support 要求插件仓库添加 `dsh-plugin` topic 以便发现：
 https://github.com/deepseek-ai/deepseek-harness#community-and-support
@@ -19,4 +19,4 @@ GitHub topics 与 package.json keywords 是两处元数据；仅修改 keywords 
 
 首次公开发布已完成，默认分支为 main；源代码和仓库 topics 已远程核对。类型检查、162 项回归、生产构建与 11 项插件预检通过。
 
-BRAND-RENAME-001：仓库更名为 langcontour，保留仓库ID、提交历史和 dsh-plugin 等 topics；原仓库链接由 GitHub 重定向。新包 v0.7.0 的升级步骤见 README，项目本机目录与 .vislang 数据保留。
+BRAND-RENAME-001：仓库更名为 dsh-langgraph-canvas，保留仓库ID、提交历史和 dsh-plugin 等 topics；原仓库链接由 GitHub 重定向。新包 v0.7.0 的升级步骤见 README，项目本机目录与 .vislang 数据保留。

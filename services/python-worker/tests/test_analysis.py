@@ -4,7 +4,7 @@ import unittest
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'src'))
-from langcontour_worker.analysis import Analyzer, confined
+from dsh_langgraph_canvas_worker.analysis import Analyzer, confined
 
 
 class AnalysisTests(unittest.TestCase):

@@ -19,8 +19,8 @@ export function analysisSessionStorage(): StorageLike | undefined {
 /** View lifetime owns observation only. Tasks and their identity belong to the backend. */
 export function createAnalysisMonitor(api: Client, projectId: string, sessionId: string | null, storage?: StorageLike) {
   storage = compatibleStorage(storage);
-  const key = 'langcontour:analysis-request:' + JSON.stringify([api.base, projectId, sessionId]);
-  const autoKey = 'langcontour:analysis-auto:' + JSON.stringify([api.base, projectId, sessionId]);
+  const key = 'dsh-langgraph-canvas:analysis-request:' + JSON.stringify([api.base, projectId, sessionId]);
+  const autoKey = 'dsh-langgraph-canvas:analysis-auto:' + JSON.stringify([api.base, projectId, sessionId]);
   function attempted(revision: string) {
     let saved: string[] = [];
     try {

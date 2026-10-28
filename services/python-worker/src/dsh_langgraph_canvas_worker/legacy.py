@@ -1,5 +1,5 @@
 """Legacy ownership identifiers are accepted only inside the existing strict workspace boundary."""
-BEHAVIOR_PREFIXES = ('langcontour-behavior-', 'vis4agent-behavior-')
+BEHAVIOR_PREFIXES = ('dsh-langgraph-canvas-behavior-', 'langcontour-behavior-', 'vis4agent-behavior-')
 
 
 def behavior_marker(name):

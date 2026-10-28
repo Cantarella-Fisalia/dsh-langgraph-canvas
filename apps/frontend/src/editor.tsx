@@ -17,7 +17,7 @@ function readDraft(key: string, graph: GraphDocument | null): { value: Structure
     if (!text) return { value: null, error: '' };
     const draft = JSON.parse(text) as StructureDraft;
     if (draft.schemaVersion !== 1 || draft.graphId !== graph.id || typeof draft.projectId !== 'string' ||
-        key !== 'langcontour:structure-draft:' + draft.projectId + ':' + draft.graphId ||
+        key !== 'dsh-langgraph-canvas:structure-draft:' + draft.projectId + ':' + draft.graphId ||
         typeof draft.baseRevision !== 'string' || typeof draft.requestId !== 'string' || !draft.original?.state ||
         !Array.isArray(draft.original.nodes) || draft.original.nodes.some(n => !n || typeof n.id !== 'string') ||
         typeof draft.original.state.reference !== 'string') throw new Error();
@@ -30,7 +30,7 @@ function readDraft(key: string, graph: GraphDocument | null): { value: Structure
   } catch { return { value: null, error: '已有本地草稿无法读取，原记录未覆盖；可重新编辑建立草稿。' }; }
 }
 export function useStructureDraft(projectId: string | undefined, base: GraphDocument | null) {
-  const key = projectId && base ? 'langcontour:structure-draft:' + projectId + ':' + base.id : '';
+  const key = projectId && base ? 'dsh-langgraph-canvas:structure-draft:' + projectId + ':' + base.id : '';
   const recovered = useMemo(() => readDraft(key, base), [key]);
   const [session, setSession] = useState({ key, ...recovered });
   const active = session.key === key ? session : { key, ...recovered };

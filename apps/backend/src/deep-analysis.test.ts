@@ -19,7 +19,7 @@ const payload = () => ({ graphs: [{ file: 'graph.py', symbol: 'g', scope: '', so
   nodes: [{ id: 'work', functionRef: 'work', summary: 'fixture summary', registration: location('graph.py', 6), implementation: location('nodes.py', 1) }], edges: [] }] });
 async function setup(t: any, respond: (request: any, call: number) => Promise<unknown> = async (_r, call) => call === 1
   ? { readFiles: [{ file: 'nodes.py', line: 1, endLine: 1 }] } : payload(), source = graphSource) {
-  const directory = await mkdtemp(join(tmpdir(), 'langcontour-deep-'));
+  const directory = await mkdtemp(join(tmpdir(), 'dsh-langgraph-canvas-deep-'));
   await writeFile(join(directory, 'graph.py'), source);
   await writeFile(join(directory, 'state.py'), 'from typing import TypedDict\nclass State(TypedDict):\n    question: str\n');
   await writeFile(join(directory, 'nodes.py'), 'def work(s): return s\n');

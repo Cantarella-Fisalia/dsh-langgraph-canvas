@@ -1,6 +1,6 @@
 [project]
-name = "langcontour-worker"
-version = "0.3.0"
+name = "dsh-langgraph-canvas-worker"
+version = "0.4.0"
 requires-python = ">=3.11"
 description = "Read-only static LangGraph source analyzer"
 dependencies = []

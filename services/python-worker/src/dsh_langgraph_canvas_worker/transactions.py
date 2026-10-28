@@ -98,7 +98,7 @@ class Transactions:
 
     def atomic(self, path, raw, mode=0o600):
         # Temporary is always in the target directory, never on a different volume.
-        fd, temporary = tempfile.mkstemp(prefix='.langcontour-', suffix='.tmp', dir=path.parent)
+        fd, temporary = tempfile.mkstemp(prefix='.dsh-langgraph-canvas-', suffix='.tmp', dir=path.parent)
         temporary = Path(temporary)
         try:
             with os.fdopen(fd, 'wb') as handle:

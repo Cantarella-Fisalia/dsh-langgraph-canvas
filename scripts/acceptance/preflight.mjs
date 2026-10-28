@@ -58,10 +58,10 @@ async function check(id, run) {
 let ownedRoot, server, streamReader, streamAbort, streamPump;
 let registered, lifecycle;
 const disposers = [];
-const previousRepo = process.env.LANGCONTOUR_REPO_ROOT;
+const previousRepo = process.env.DSH_LANGGRAPH_CANVAS_REPO_ROOT;
 try {
   // No user profile, credentials or original example directory is modified.
-  process.env.LANGCONTOUR_REPO_ROOT = repo;
+  process.env.DSH_LANGGRAPH_CANVAS_REPO_ROOT = repo;
   const pluginPath = join(repo, 'plugins/harness/lib/index.js');
   async function fingerprint(directory) {
     for (const name of (await readdir(join(repo, directory))).sort()) {
@@ -85,7 +85,7 @@ try {
   await check('plugin-registration', () => {
     apply({
       webServer: { register(route) {
-        assert.equal(route.kind, 'prefix'); assert.equal(route.path, '/langcontour');
+        assert.equal(route.kind, 'prefix'); assert.equal(route.path, '/dsh-langgraph-canvas');
         registered = route;
         return () => { registered = undefined; };
       } },
@@ -109,7 +109,7 @@ try {
   });
   await new Promise((done, reject) => { server.once('error', reject); server.listen(0, '127.0.0.1', done); });
   const base = 'http://127.0.0.1:' + server.address().port;
-  const api = '/langcontour/api/v1';
+  const api = '/dsh-langgraph-canvas/api/v1';
   async function json(path, body, method = body === undefined ? 'GET' : 'POST', origin = 'dsh-app://app') {
     const response = await fetch(base + api + path, {
       method, headers: { 'content-type': 'application/json', origin },
@@ -118,7 +118,7 @@ try {
     return { status: response.status, body: await response.json() };
   }
   await check('built-static-assets', async () => {
-    const response = await fetch(base + '/langcontour/app/');
+    const response = await fetch(base + '/dsh-langgraph-canvas/app/');
     assert.equal(response.status, 200);
     assert.equal(response.headers.get('cache-control'), 'no-cache');
     const html = await response.text();
@@ -126,7 +126,7 @@ try {
     assert.ok(assets.some(a => a.endsWith('.js'))); assert.ok(assets.some(a => a.endsWith('.css')));
     const evidence = [];
     for (const asset of assets) {
-      const url = new URL(asset, base + '/langcontour/app/');
+      const url = new URL(asset, base + '/dsh-langgraph-canvas/app/');
       const result = await fetch(url); assert.equal(result.status, 200);
       assert.match(result.headers.get('cache-control') || '', /immutable/);
       const bytes = Buffer.from(await result.arrayBuffer());
@@ -135,10 +135,27 @@ try {
       report.sourceHashes[file] = hash(bytes);
       evidence.push({ file, bytes: bytes.length, sha256: hash(bytes) });
     }
-    const head = await fetch(base + '/langcontour/app/', { method: 'HEAD' });
+    const head = await fetch(base + '/dsh-langgraph-canvas/app/', { method: 'HEAD' });
     assert.equal(head.status, 200); assert.equal((await head.arrayBuffer()).byteLength, 0);
-    assert.equal((await fetch(base + '/langcontour/app/assets/missing.js')).status, 404);
+    assert.equal((await fetch(base + '/dsh-langgraph-canvas/app/assets/missing.js')).status, 404);
     return evidence;
+  });
+  await check('third-party-license-materials', async () => {
+    const notice = await readFile(join(repo, 'THIRD_PARTY_NOTICES.md'));
+    const response = await fetch(base + '/dsh-langgraph-canvas/app/THIRD_PARTY_NOTICES.md');
+    assert.equal(response.status, 200);
+    assert.equal(hash(Buffer.from(await response.arrayBuffer())), hash(notice));
+    const inventory = JSON.parse(await readFile(join(repo, 'third_party_licenses/manifest.json'), 'utf8'));
+    assert.ok(inventory.packages.length > 0);
+    for (const item of inventory.packages) {
+      assert.ok(item.licenseFile.startsWith('third_party_licenses/') && !item.licenseFile.includes('..'));
+      const original = await readFile(join(repo, item.licenseFile));
+      assert.equal(hash(original), item.sha256);
+      const delivered = await fetch(base + '/dsh-langgraph-canvas/app/' + item.licenseFile);
+      assert.equal(delivered.status, 200);
+      assert.equal(hash(Buffer.from(await delivered.arrayBuffer())), item.sha256);
+    }
+    return { packages: inventory.packages.length, licenseTypes: [...new Set(inventory.packages.map(item => item.license))] };
   });
   await check('api-origin-and-prefix', async () => {
     const result = await json('/health');
@@ -148,7 +165,7 @@ try {
     assert.equal((await json('/not-a-route')).status, 404);
     return result.body;
   });
-  ownedRoot = await mkdtemp(join(tmpdir(), 'langcontour-acceptance-'));
+  ownedRoot = await mkdtemp(join(tmpdir(), 'dsh-langgraph-canvas-acceptance-'));
   const projects = {};
   await check('real-python-examples-in-owned-copies', async () => {
     const evidence = [];
@@ -270,7 +287,7 @@ try {
     const url = new URL(harnessUrl);
     assert.ok(url.protocol === 'http:' && ['localhost', '127.0.0.1', '[::1]'].includes(url.hostname)
       && !url.username && !url.password && !url.search && !url.hash, 'Use a local Harness origin without credentials or query');
-    const response = await fetch(new URL('/langcontour/api/v1/behavior-support', url), { signal: AbortSignal.timeout(5000) });
+    const response = await fetch(new URL('/dsh-langgraph-canvas/api/v1/behavior-support', url), { signal: AbortSignal.timeout(5000) });
     if (!response.ok) {
       report.blockers.push({ id: 'HARNESS_READINESS_UNCONFIRMED', message: '宿主能力查询 HTTP ' + response.status });
       return { status: response.status, modelTasksSubmitted: 0 };
@@ -298,8 +315,8 @@ try {
   report.error = { name: error.name, message: error.message };
   console.error('[FAIL] ' + error.message);
 } finally {
-  if (previousRepo === undefined) delete process.env.LANGCONTOUR_REPO_ROOT;
-  else process.env.LANGCONTOUR_REPO_ROOT = previousRepo;
+  if (previousRepo === undefined) delete process.env.DSH_LANGGRAPH_CANVAS_REPO_ROOT;
+  else process.env.DSH_LANGGRAPH_CANVAS_REPO_ROOT = previousRepo;
   for (const dispose of disposers.toReversed()) {
     try { await dispose(); } catch (error) { report.error ??= { message: 'Disposal failed: ' + error.message }; }
   }
@@ -312,7 +329,7 @@ try {
   if (ownedRoot) {
     try {
       const actual = await realpath(ownedRoot), temp = await realpath(tmpdir());
-      assert.ok(inside(temp, actual) && basename(actual).startsWith('langcontour-acceptance-'));
+      assert.ok(inside(temp, actual) && basename(actual).startsWith('dsh-langgraph-canvas-acceptance-'));
       assert.equal(await realpath(dirname(actual)), temp);
       await rm(actual, { recursive: true, force: true });
       report.fixtureCleaned = true;

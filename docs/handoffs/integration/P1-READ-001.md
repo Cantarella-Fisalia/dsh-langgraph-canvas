@@ -12,16 +12,16 @@
 | Harness | 桌面版 0.2.0-rc.2，Electron 43.3.0，应用内 `@deepseek-ai/*` 0.2.1-rc.2 |
 | Node（宿主运行时） | 24.21.0（类型剥离可用，已实测 import `.ts` 成功） |
 | Python | 3.12.3，`D:/Anaconda/python.exe` |
-| 验收 profile | 隔离 `E:\Heng\vis4agent\.dsh-test\profiles\langcontour-test`（不动 desktop） |
+| 验收 profile | 隔离 `E:\Heng\vis4agent\.dsh-test\profiles\dsh-langgraph-canvas-test`（不动 desktop） |
 | 桌面安装 | `link:E:/Heng/vis4agent/plugins/harness` + 目录联结（沿用 P0，见 PROJECT_PLAN 14.3） |
 
 ## 2. 挂载方式（接入层实现）
 
-- 宿主路由前缀 `/langcontour`，内部分流：
-  - `/langcontour/app/**` → `apps/frontend/dist` 静态产物（同源，SPA 兜底 index.html，路径越界 403）
-  - `/langcontour/api/v1/**` → 甲方 `createApplication({ repoRoot, pythonCommand, apiPrefix })` 的 `handler`
-  - `/langcontour/api/health` → 接入层诊断（保留 P0 路由，便于确认加载）
-- 浏览器半侧：`settings.section` 提供状态卡片与入口，`shell.overlay` + `createPortal(document.body)` 提供全屏 iframe 工作台（`?apiBase=/langcontour/api/v1`），不用 Vite 产物替换 `client/client.js`。
+- 宿主路由前缀 `/dsh-langgraph-canvas`，内部分流：
+  - `/dsh-langgraph-canvas/app/**` → `apps/frontend/dist` 静态产物（同源，SPA 兜底 index.html，路径越界 403）
+  - `/dsh-langgraph-canvas/api/v1/**` → 甲方 `createApplication({ repoRoot, pythonCommand, apiPrefix })` 的 `handler`
+  - `/dsh-langgraph-canvas/api/health` → 接入层诊断（保留 P0 路由，便于确认加载）
+- 浏览器半侧：`settings.section` 提供状态卡片与入口，`shell.overlay` + `createPortal(document.body)` 提供全屏 iframe 工作台（`?apiBase=/dsh-langgraph-canvas/api/v1`），不用 Vite 产物替换 `client/client.js`。
 - 生命周期：`ctx.effect` 返回 disposer，调用 `application.close()`。
 - 关键实现约束（已踩坑）：
   - 插件经 pnpm 联结加载时 `import.meta.url` 停在 profile 的 `node_modules` 下，**必须 `realpathSync.native`** 解链（普通 `realpathSync` 解不开 pnpm 联结），否则静态目录与后端入口都会指错。
@@ -49,7 +49,7 @@
 ```powershell
 # 1) 隔离实例（插件需启动 Python，受限沙箱会 spawn EPERM，须在非沙箱环境跑）
 $env:DSH_HOME = 'E:\Heng\vis4agent\.dsh-test'
-dsh --profile langcontour-test --no-open --port 61999
+dsh --profile dsh-langgraph-canvas-test --no-open --port 61999
 # 打开启动日志里的 http://127.0.0.1:61999/?token=... → 设置 → LangGraph 工作台 → 打开工作台
 
 # 2) 接口级验收（真实 http.Server + 真实 Python）
@@ -62,9 +62,9 @@ node .tmp\verify-p1.mjs      # 路由/静态/健康检查
 
 ## 5. 问题与限制
 
-1. **桌面版尚未重启验收**：desktop profile 已 link 到 v0.2.0，但当前运行中的桌面应用是 16:35 启动的 0.1.0 宿主，`/langcontour/app` 路由不存在。需重启一次应用；重启后应看到「宿主插件 0.2.0 · 后端已挂载」。
+1. **桌面版尚未重启验收**：desktop profile 已 link 到 v0.2.0，但当前运行中的桌面应用是 16:35 启动的 0.1.0 宿主，`/dsh-langgraph-canvas/app` 路由不存在。需重启一次应用；重启后应看到「宿主插件 0.2.0 · 后端已挂载」。
 2. 工作台目前从设置页进入；后续可改为侧边栏主面板（需接入宿主导航服务），不影响本批验收。
-3. Python 解释器优先级为 `LANGCONTOUR_PYTHON` → `D:/Anaconda/python.exe` → `python`。目标机若不同需设环境变量；桌面版不继承终端环境，必要时把解释器路径写进配置（待与甲方确定配置位）。
+3. Python 解释器优先级为 `DSH_LANGGRAPH_CANVAS_PYTHON` → `D:/Anaconda/python.exe` → `python`。目标机若不同需设环境变量；桌面版不继承终端环境，必要时把解释器路径写进配置（待与甲方确定配置位）。
 4. 前端未验证：拖拽保存的真实交互、Last-Event-ID 断线续传、多窗口并发编辑布局。
 5. 未验证：桌面版真实的 SSE 长连接稳定性（隔离实例已连上并收到事件）。
 

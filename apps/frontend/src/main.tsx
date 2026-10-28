@@ -1,4 +1,4 @@
-import { previousBrand } from '../../../scripts/runtime/brand.mjs';
+import { configurationNames } from '../../../scripts/runtime/brand.mjs';
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { App } from './App.tsx';
@@ -7,7 +7,7 @@ import './styles.css';
 
 const parameters = new URLSearchParams(location.search);
 // Standalone build can be served under the Harness origin by its adapter.
-const config = (window as any).__LANGCONTOUR_CONFIG__ || (window as any)['__' + previousBrand.toUpperCase() + '_CONFIG__'] || {};
+const config = configurationNames.map(name => (window as any)[name]).find(Boolean) || {};
 const embedded = parameters.get('embedded') === '1';
 function Workbench() {
   const context = useHostContext(embedded);

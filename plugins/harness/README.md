@@ -1,4 +1,4 @@
-# LangContour Harness 插件 v0.7.0
+# dsh-langgraph-canvas Harness 插件 v0.8.0
 
 本地桌面插件，宿主路由、原生架构视图、工作区／主题桥接及真实行为生成 adapter 已接通。先看 [使用与首轮测试指南](../../USER_GUIDE.md)。本机原有 link 安装继续生效，宿主改动需要完全退出并重新打开桌面。
 
@@ -8,7 +8,7 @@
 
 详细契约：[P3 行为 API](../../docs/api/P3_BEHAVIOR_TASKS_API.md)。下文保留早期安装说明；功能和状态以使用指南与本段为准。
 
-# langcontour —— Harness 插件（P1 接入版）
+# dsh-langgraph-canvas —— Harness 插件（P1 接入版）
 
 把甲方（主功能开发）交付的独立前后端接进 DeepSeek Harness：`apps/frontend/dist` 作为同源 iframe 工作台，`apps/backend` 的 `createApplication` 挂到宿主路由前缀下。
 
@@ -29,9 +29,9 @@ plugins/harness/
 
 | 路由 | 作用 |
 |---|---|
-| `/langcontour/app/**` | `apps/frontend/dist` 静态产物（同源，SPA 兜底，路径越界 403） |
-| `/langcontour/api/v1/**` | 甲方 `createApplication` 的 handler（项目、图、源码、布局、SSE） |
-| `/langcontour/api/health` | 接入层诊断：插件版本、仓库根、Python 命令、后端是否已挂载 |
+| `/dsh-langgraph-canvas/app/**` | `apps/frontend/dist` 静态产物（同源，SPA 兜底，路径越界 403） |
+| `/dsh-langgraph-canvas/api/v1/**` | 甲方 `createApplication` 的 handler（项目、图、源码、布局、SSE） |
+| `/dsh-langgraph-canvas/api/health` | 接入层诊断：插件版本、仓库根、Python 命令、后端是否已挂载 |
 
 ## 加载方式
 
@@ -39,9 +39,9 @@ plugins/harness/
 
 ```powershell
 $env:DSH_HOME = 'E:\Heng\vis4agent\.dsh-test'
-dsh --profile langcontour-test --from-default-profile web --dump-config   # 首次创建
-dsh plugin --profile langcontour-test add "E:/Heng/vis4agent/plugins/harness"
-dsh --profile langcontour-test --no-open --port 61999
+dsh --profile dsh-langgraph-canvas-test --from-default-profile web --dump-config   # 首次创建
+dsh plugin --profile dsh-langgraph-canvas-test add "E:/Heng/vis4agent/plugins/harness"
+dsh --profile dsh-langgraph-canvas-test --no-open --port 61999
 ```
 
 打开启动日志给的带 token 地址，在会话的 **对话／轨迹** 旁选择 **架构**；空白会话点击顶部 **◇ 架构**。项目目录自动跟随当前工作区，无需重复输入。设置中的 **LangGraph 架构** 仅用于查看服务状态。
@@ -60,7 +60,7 @@ dsh --profile <name> --patch "E:/Heng/vis4agent/plugins/harness/dev.patch.yml"
 
 ## Python 解释器
 
-优先级：`LANGCONTOUR_PYTHON` 环境变量 → `D:/Anaconda/python.exe` → `PATH` 上的 `python`。
+优先级：`DSH_LANGGRAPH_CANVAS_PYTHON` 环境变量 → `D:/Anaconda/python.exe` → `PATH` 上的 `python`。
 桌面应用不继承终端环境，换机器时需要改这个默认值或注入环境变量。
 
 ## 四个容易踩的坑

@@ -9,7 +9,7 @@ import { createApplication } from './application.ts';
 
 const repoRoot = fileURLToPath(new URL('../../../', import.meta.url));
 test('project read, source confinement, layout isolation and optimistic conflicts', async () => {
-  const directory = await mkdtemp(join(tmpdir(), 'langcontour-api-'));
+  const directory = await mkdtemp(join(tmpdir(), 'dsh-langgraph-canvas-api-'));
   const source = 'from langgraph.graph import StateGraph, START, END\ng = StateGraph(dict)\ng.add_node("节点", worker)\ng.add_edge(START, "节点")\ng.add_edge("节点", END)\n';
   await writeFile(join(directory, 'graph.py'), source, 'utf8');
   const app = createApplication({ repoRoot });
@@ -58,7 +58,7 @@ test('project read, source confinement, layout isolation and optimistic conflict
 });
 
 test('invalid existing layout is not overwritten', async () => {
-  const directory = await mkdtemp(join(tmpdir(), 'langcontour-layout-'));
+  const directory = await mkdtemp(join(tmpdir(), 'dsh-langgraph-canvas-layout-'));
   await mkdir(join(directory, '.vislang'));
   await writeFile(join(directory, '.vislang/layout.json'), 'broken-layout');
   await writeFile(join(directory, 'graph.py'), 'from langgraph.graph import StateGraph\ng=StateGraph(dict)');

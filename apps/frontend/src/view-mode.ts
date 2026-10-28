@@ -1,6 +1,6 @@
 import { compatibleStorage } from './legacy-storage.ts';
 export type ViewMode = 'standard' | 'professional';
-export const viewModeKey = 'langcontour:view-mode';
+export const viewModeKey = 'dsh-langgraph-canvas:view-mode';
 export const viewModeNames = { standard: '标准模式', professional: '专业模式' };
 
 export function viewModeStorage(): Pick<Storage, 'getItem' | 'setItem'> | undefined {

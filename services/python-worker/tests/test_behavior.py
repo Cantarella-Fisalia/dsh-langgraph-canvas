@@ -6,9 +6,9 @@ import unittest
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'src'))
-from langcontour_worker.analysis import Analyzer
-from langcontour_worker.behavior import BehaviorTasks, decoded
-from langcontour_worker.transactions import Transactions, TransactionError
+from dsh_langgraph_canvas_worker.analysis import Analyzer
+from dsh_langgraph_canvas_worker.behavior import BehaviorTasks, decoded
+from dsh_langgraph_canvas_worker.transactions import Transactions, TransactionError
 
 GRAPH = '''from langgraph.graph import StateGraph, START, END
 from schema import State
@@ -26,20 +26,22 @@ class BehaviorTests(unittest.TestCase):
     def test_legacy_workspace_keeps_exact_ownership_and_source_checks(self):
         root, store, prepared, workdir, original, tx = self.fixture()
         task = copy.deepcopy(store.load(prepared['task']['id']))
-        with tempfile.TemporaryDirectory(prefix='vis4agent-behavior-') as directory:
-            legacy = Path(directory).resolve()
-            self.assertEqual(legacy.parent, Path(tempfile.gettempdir()).resolve())
-            for file in workdir.iterdir():
-                name = '.vis4agent-owner.json' if file.name == '.langcontour-owner.json' else file.name
-                shutil.copyfile(file, legacy / name)
-            task['_workspace'] = str(legacy)
-            self.assertEqual(set(store.snapshot(task)), set(task['_inputFiles']))
-            (legacy / '.vis4agent-owner.json').write_text('wrong-owner', encoding='utf-8')
-            with self.assertRaises(TransactionError):
-                store.workspace(task)
+        for prefix in ('langcontour', 'vis4agent'):
+            with self.subTest(previous_name=prefix), tempfile.TemporaryDirectory(prefix=prefix + '-behavior-') as directory:
+                legacy = Path(directory).resolve()
+                self.assertEqual(legacy.parent, Path(tempfile.gettempdir()).resolve())
+                marker = '.' + prefix + '-owner.json'
+                for file in workdir.iterdir():
+                    name = marker if file.name == '.dsh-langgraph-canvas-owner.json' else file.name
+                    shutil.copyfile(file, legacy / name)
+                task['_workspace'] = str(legacy)
+                self.assertEqual(set(store.snapshot(task)), set(task['_inputFiles']))
+                (legacy / marker).write_text('wrong-owner', encoding='utf-8')
+                with self.assertRaises(TransactionError):
+                    store.workspace(task)
 
     def fixture(self, new_node=False, applied=False, route=False):
-        temporary = tempfile.TemporaryDirectory(prefix='langcontour-behavior-test-')
+        temporary = tempfile.TemporaryDirectory(prefix='dsh-langgraph-canvas-behavior-test-')
         self.addCleanup(temporary.cleanup)
         root = Path(temporary.name)
         graph_source, nodes_source = GRAPH, NODES
@@ -69,7 +71,7 @@ class BehaviorTests(unittest.TestCase):
         def clean():
             # Exact test-owned target, never a computed user directory.
             resolved = workdir.resolve()
-            assert resolved == workdir and resolved.parent == Path(tempfile.gettempdir()).resolve() and resolved.name.startswith('langcontour-behavior-')
+            assert resolved == workdir and resolved.parent == Path(tempfile.gettempdir()).resolve() and resolved.name.startswith('dsh-langgraph-canvas-behavior-')
             if resolved.exists():
                 shutil.rmtree(resolved)
         self.addCleanup(clean)
@@ -107,7 +109,7 @@ class BehaviorTests(unittest.TestCase):
         for applied in [False, True]:
             with self.subTest(applied=applied):
                 root, store, prepared, workdir, original, tx = self.fixture(new_node=True, applied=applied)
-                self.edit(workdir / 'graph.py', 'raise NotImplementedError("langcontour: implement review")', 'return {"answer": state["question"]}')
+                self.edit(workdir / 'graph.py', 'raise NotImplementedError("dsh-langgraph-canvas: implement review")', 'return {"answer": state["question"]}')
                 result = store.finalize(prepared['task']['id'])
                 self.assertEqual(result['status'], 'review_ready', result['message'])
                 detail = Transactions(root).get(result['resultTransactionId'])
@@ -179,7 +181,7 @@ class BehaviorTests(unittest.TestCase):
         self.assertFalse(again['dispatch']); self.assertEqual(again['task']['id'], prepared['task']['id'])
         with self.assertRaises(TransactionError):
             store.prepare('behavior-request-001', tx['id'], '0' * 64)
-        (workdir / '.langcontour-owner.json').unlink()
+        (workdir / '.dsh-langgraph-canvas-owner.json').unlink()
         result = store.finalize(prepared['task']['id'])
         self.assertEqual(result['status'], 'failed')
         self.assertEqual(original, {p.name: p.read_bytes() for p in root.glob('*.py')})

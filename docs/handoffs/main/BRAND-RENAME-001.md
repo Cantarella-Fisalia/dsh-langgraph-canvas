@@ -1,10 +1,10 @@
-# BRAND-RENAME-001：LangContour（图廓）统一命名
+# BRAND-RENAME-001：dsh-langgraph-canvas统一命名
 
 日期：2026-10-28。负责方：甲方。状态：主功能完成，待桌面复测。用户授权自定新名字并全文件更新。
 
-品牌：LangContour（图廓），插件／仓库 slug 为 langcontour。范围：前后端标识、Harness 包清单和入口、桥接与路由、Python worker 模块与测试、环境变量、提示词、文档、仓库链接和 GitHub 名称。宿主包升级 0.7.0，主计划 v0.33。此次用户指令明确覆盖插件命名元数据与接入文件；接入实现维护责任仍归乙方。
+品牌：dsh-langgraph-canvas，插件／仓库 slug 为 dsh-langgraph-canvas。范围：前后端标识、Harness 包清单和入口、桥接与路由、Python worker 模块与测试、环境变量、提示词、文档、仓库链接和 GitHub 名称。宿主包升级 0.7.0，主计划 v0.33。此次用户指令明确覆盖插件命名元数据与接入文件；接入实现维护责任仍归乙方。
 
-本地实际工作目录 E:/Heng/vis4agent 保持可用，避免现有桌面目录链接与编辑器路径失效；新克隆目录使用 langcontour。项目数据继续使用 .vislang，保留布局、缓存、行为记录和源码事务。新命名读取旧浏览器偏好／草稿／任务回执与旧解释器环境变量；旧行为任务标识仅作为明确的兼容读取。旧名只允许出现在实际本机路径和集中兼容实现／测试／迁移说明中，不再作为产品展示或新数据标识。
+本地实际工作目录 E:/Heng/vis4agent 保持可用，避免现有桌面目录链接与编辑器路径失效；新克隆目录使用 dsh-langgraph-canvas。项目数据继续使用 .vislang，保留布局、缓存、行为记录和源码事务。新命名读取旧浏览器偏好／草稿／任务回执与旧解释器环境变量；旧行为任务标识仅作为明确的兼容读取。旧名只允许出现在实际本机路径和集中兼容实现／测试／迁移说明中，不再作为产品展示或新数据标识。
 
 不修改用户业务项目或生产 Harness profile，不自动重发旧模型任务。包名与桥接改变后需重载／重新链接新版插件；交付提供升级说明与隔离验证，不将预检等同于桌面验收。
 
@@ -12,4 +12,4 @@
 
 实际 E 盘类型检查、170 项回归、标准生产构建和 11 项插件预检通过。资源为 index-DmFU6sc2.css／index-BpPHjau6.js，宿主包 v0.7.0。暂存副本构建曾遇到 esbuild 临时文件权限问题，实际项目标准构建已验证通过。截图／真实桌面交互未验收，不修改生产 profile。
 
-GitHub 发布目标：https://github.com/Cantarella-Fisalia/langcontour；保留同一仓库ID、公开状态、main 分支、已有历史及 dsh-plugin 等发现主题。本批操作正常提交推送，不强推历史。
+GitHub 发布目标：https://github.com/Cantarella-Fisalia/dsh-langgraph-canvas；保留同一仓库ID、公开状态、main 分支、已有历史及 dsh-plugin 等发现主题。本批操作正常提交推送，不强推历史。

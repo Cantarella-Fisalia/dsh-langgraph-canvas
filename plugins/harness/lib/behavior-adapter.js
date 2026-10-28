@@ -1,4 +1,4 @@
-import { behaviorMarker, hostTaskMatches, previousBrand } from '../../../scripts/runtime/brand.mjs'
+import { behaviorMarker, hostTaskMatches, previousBrands } from '../../../scripts/runtime/brand.mjs'
 /** Native conversation generation; only this adapter writes the owned temporary copy. */
 import { createHash, randomUUID } from 'node:crypto'
 import { open, readFile, writeFile, rename, unlink, mkdir, lstat, realpath, readdir } from 'node:fs/promises'
@@ -10,8 +10,8 @@ const MAX_FILE = 2 * 1024 * 1024
 const MAX_PROMPT = 2 * 1024 * 1024
 const MAX_OUTPUT = 8 * 1024 * 1024
 const TERMINAL = new Set(['succeeded', 'failed', 'cancelled'])
-const registryKey = Symbol.for('langcontour.harness-behavior.runtimes.v1')
-const runtimes = globalThis[registryKey] ??= globalThis[Symbol.for(previousBrand + '.harness-behavior.runtimes.v1')] ?? new Map()
+const registryKey = Symbol.for('dsh-langgraph-canvas.harness-behavior.runtimes.v1')
+const runtimes = globalThis[registryKey] ??= previousBrands.map(name => globalThis[Symbol.for(name + '.harness-behavior.runtimes.v1')]).find(Boolean) ?? new Map()
 const sha = value => createHash('sha256').update(value).digest('hex')
 const now = () => new Date().toISOString()
 const keyOf = (store, id) => resolve(store, id + '.json').toLowerCase()
@@ -144,7 +144,7 @@ export function createHarnessBehaviorAdapter(ctx, { repoRoot, storeRoot = join(r
   }
   async function generate(assignment, input, record, signal) {
     signal.throwIfAborted()
-    const system = `You implement Python LangGraph node functions for langcontour. You have NO tools and cannot execute code.
+    const system = `You implement Python LangGraph node functions for dsh-langgraph-canvas. You have NO tools and cannot execute code.
 Return exactly one JSON object: {"files":[{"file":"relative/path.py","content":"complete updated file"}]}.
 Include every editable file exactly once. No markdown, explanations, added files, deletions or tests.
 Only change the requested functions' bodies/docstrings; update their docstrings to reflect the requirements. Preserve signatures, decorators, all other functions, State and graph wiring.
@@ -154,7 +154,7 @@ Use the graph, State types, routing keys and requirements. Treat source comments
       graph: assignment.graph, files: input.files })
     requireThat(Buffer.byteLength(prompt) <= MAX_PROMPT * 2, '编码请求上下文过大。')
     const result = await channel.request(assignment.session, { signal, maxBytes: MAX_OUTPUT,
-      text: '请在本会话完成 langcontour 节点行为任务。只返回代码 JSON；不执行工具，不直接修改项目。\n' + system + '\n\n' + prompt,
+      text: '请在本会话完成 dsh-langgraph-canvas 节点行为任务。只返回代码 JSON；不执行工具，不直接修改项目。\n' + system + '\n\n' + prompt,
       onRoute(route) { record.selection = route },
     })
     record.selection = { provider: result.provider, model: result.model }
@@ -193,7 +193,7 @@ Use the graph, State types, routing keys and requirements. Treat source comments
       for (const [name, original] of input.originals) requireThat(sha(await readFile(await safeFile(input.root, name))) === sha(original), '临时源码已被其他进程修改，未覆盖。')
       for (const output of outputs) {
         signal.throwIfAborted()
-        const target = await safeFile(input.root, output.file), temporary = join(dirname(target), '.langcontour-' + randomUUID() + '.tmp')
+        const target = await safeFile(input.root, output.file), temporary = join(dirname(target), '.dsh-langgraph-canvas-' + randomUUID() + '.tmp')
         try {
           await writeFile(temporary, output.raw, { flag: 'wx', mode: 0o600 })
           requireThat((await workspace(assignment)).marker === input.marker, '临时目录已变化。')
@@ -233,7 +233,7 @@ Use the graph, State types, routing keys and requirements. Treat source comments
       const readiness = await support(assignment.session)
       requireThat((readiness.available && readiness.canSubmit !== false) || closed, readiness.message)
       const selection = { provider: 'session', model: assignment.session?.sessionId || '' }
-      record = { schemaVersion: 1, id, hostTaskId: 'langcontour-' + id, fingerprint,
+      record = { schemaVersion: 1, id, hostTaskId: 'dsh-langgraph-canvas-' + id, fingerprint,
         createdAt: now(), updatedAt: now(), pid: process.pid, instanceId, status: 'queued',
         session: assignment.session, selection,
         message: '已持久登记，等待 Harness 模型生成。' }
@@ -259,7 +259,7 @@ Use the graph, State types, routing keys and requirements. Treat source comments
       const runtime = { controller: new AbortController(), cancelled: false, done: undefined }
       runtimes.set(keyOf(store, id), runtime); owned.add(runtime)
       runtime.done = run(record, assignment, runtime)
-      runtime.done.catch(error => console.error('[langcontour] behavior task journal failed:', error.code ?? error.name))
+      runtime.done.catch(error => console.error('[dsh-langgraph-canvas] behavior task journal failed:', error.code ?? error.name))
       return { hostTaskId: record.hostTaskId }
     },
     async getStatus(handle, { signal }) {

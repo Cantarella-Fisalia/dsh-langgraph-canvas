@@ -1,11 +1,11 @@
 import { environmentValue } from '../../../scripts/runtime/brand.mjs'
 /**
- * langcontour —— 宿主半侧（完整编辑闭环）
+ * dsh-langgraph-canvas —— 宿主半侧（完整编辑闭环）
  *
  * 职责（按 docs/COOPERATION_AGREEMENT.md 2.2）：把甲方交付的独立前后端接进 Harness。
  *
- *   1. 静态：把 apps/frontend/dist 挂在 /langcontour/app 下（同源，iframe 可加载）
- *   2. API ：把 apps/backend 的 createApplication 挂在 /langcontour/api/v1
+ *   1. 静态：把 apps/frontend/dist 挂在 /dsh-langgraph-canvas/app 下（同源，iframe 可加载）
+ *   2. API ：把 apps/backend 的 createApplication 挂在 /dsh-langgraph-canvas/api/v1
  *   3. 生命周期：插件卸载时调用 application.close()，关掉 watcher / SSE / Python worker
  *
  * 行为模型服务只返回代码 JSON；受限临时副本与确认事务见 P3_BEHAVIOR_TASKS_API.md。
@@ -18,17 +18,17 @@ import { fileURLToPath, pathToFileURL } from 'node:url'
 import { createHarnessBehaviorAdapter } from './behavior-adapter.js'
 import { createHarnessAnalysisAdapter } from './analysis-adapter.js'
 
-export const name = 'langcontour'
+export const name = 'dsh-langgraph-canvas'
 
 /** 需要注入的服务：webServer 提供 HTTP 路由能力（见 dsh-host-webserver）。 */
 // Conversation services are optional: static graph viewing needs only webServer.
 export const inject = ['webServer']
 
-const VERSION = '0.7.0'
+const VERSION = '0.8.0'
 
 /**
  * 仓库根：插件可能被 pnpm link / 目录联结加载，import.meta.url 会停在
- * <profile>/node_modules/langcontour/lib/index.js，必须先解链，
+ * <profile>/node_modules/dsh-langgraph-canvas/lib/index.js，必须先解链，
  * 否则静态目录和后端入口都会指到 profile 里去。
  *
  * 注意：pnpm 生成的联结用 realpathSync 解不开，必须用 realpathSync.native。
@@ -52,9 +52,9 @@ const FRONTEND_DIST = join(REPO_ROOT, 'apps', 'frontend', 'dist')
 const BACKEND_ENTRY = join(REPO_ROOT, 'apps', 'backend', 'src', 'application.ts')
 
 /** 后端 API 前缀，必须与前端 apiBase 一致。 */
-const API_PREFIX = '/langcontour/api/v1'
-const APP_PREFIX = '/langcontour/app'
-const ROUTE_PREFIX = '/langcontour'
+const API_PREFIX = '/dsh-langgraph-canvas/api/v1'
+const APP_PREFIX = '/dsh-langgraph-canvas/app'
+const ROUTE_PREFIX = '/dsh-langgraph-canvas'
 
 const MIME = {
   '.html': 'text/html; charset=utf-8',
@@ -86,7 +86,7 @@ function sendJson(res, status, payload) {
 }
 
 export function apply(ctx) {
-  console.log('[langcontour] host plugin loaded (v' + VERSION + ') root=' + REPO_ROOT)
+  console.log('[dsh-langgraph-canvas] host plugin loaded (v' + VERSION + ') root=' + REPO_ROOT)
 
   /** 后端应用惰性创建：首次请求时才 import（类型剥离 + 启动 Python 客户端）。 */
   let applicationPromise
@@ -106,12 +106,12 @@ export function apply(ctx) {
             behaviorTaskAdapter,
             analysisAdapter: createHarnessAnalysisAdapter(ctx),
           })
-          console.log('[langcontour] backend mounted at ' + API_PREFIX + ' python=' + pythonCommand)
+          console.log('[dsh-langgraph-canvas] backend mounted at ' + API_PREFIX + ' python=' + pythonCommand)
           return application
         })
         .catch((error) => {
           applicationPromise = undefined
-          console.error('[langcontour] backend import failed:', error)
+          console.error('[dsh-langgraph-canvas] backend import failed:', error)
           throw error
         })
     }
@@ -130,7 +130,7 @@ export function apply(ctx) {
     try {
       info = await stat(target)
     } catch {
-      // 目录缺省页：/langcontour/app 与 /langcontour/app/ 都返回 index.html
+      // 目录缺省页：/dsh-langgraph-canvas/app 与 /dsh-langgraph-canvas/app/ 都返回 index.html
       if (relative === '' || extname(relative) === '') {
         return serveStatic(req, res, APP_PREFIX + '/index.html')
       }
@@ -168,7 +168,7 @@ export function apply(ctx) {
             try { pathname = decodeURIComponent(url.pathname) }
             catch { sendJson(res, 400, { error: { code: 'INVALID_PATH', message: '路径编码无效。' } }); return }
             // 兼容 P0 健康检查，便于确认宿主侧是否加载
-            if (req.method === 'GET' && pathname === '/langcontour/api/health') {
+            if (req.method === 'GET' && pathname === '/dsh-langgraph-canvas/api/health') {
               let backend = 'pending'
               try {
                 await getApplication()
@@ -207,13 +207,13 @@ export function apply(ctx) {
             sendJson(res, 404, { error: { code: 'NOT_FOUND', message: '路径不存在。', path: pathname } })
           } catch (error) {
             const message = error instanceof Error ? error.message : String(error)
-            console.error('[langcontour] request failed:', pathname, message)
+            console.error('[dsh-langgraph-canvas] request failed:', pathname, message)
             if (!res.headersSent) sendJson(res, 500, { error: { code: 'INTEGRATION_ERROR', message } })
             else res.end()
           }
         },
       }),
-    'langcontour: /langcontour routes (app + api)',
+    'dsh-langgraph-canvas: /dsh-langgraph-canvas routes (app + api)',
   )
 
   // 卸载清理：关 watcher、SSE 监听与 Python worker
@@ -221,6 +221,6 @@ export function apply(ctx) {
     await behaviorTaskAdapter.close()
     if (!applicationPromise) return
     await applicationPromise.then((application) => application.close())
-      .catch((error) => console.error('[langcontour] close failed:', error))
-  }, 'langcontour: application lifecycle')
+      .catch((error) => console.error('[dsh-langgraph-canvas] close failed:', error))
+  }, 'dsh-langgraph-canvas: application lifecycle')
 }

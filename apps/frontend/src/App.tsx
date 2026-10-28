@@ -120,7 +120,7 @@ export function App({ apiBase = '/api/v1', embedded = false, workspaceRoot = nul
   const [verified, setVerified] = useState(false);
   const [root, setRoot] = useState(() => {
     if (embedded) return workspaceRoot || '';
-    try { return compatibleStorage(localStorage)?.getItem('langcontour:lastRoot') || ''; } catch { return ''; }
+    try { return compatibleStorage(localStorage)?.getItem('dsh-langgraph-canvas:lastRoot') || ''; } catch { return ''; }
   });
   const [project, setProject] = useState<Project | null>(null);
   const [analysis, setAnalysis] = useState<ProjectAnalysis | null>(null);
@@ -228,7 +228,7 @@ export function App({ apiBase = '/api/v1', embedded = false, workspaceRoot = nul
       if (current !== generation.current) return;
       setProject(data.project); setAnalysis(data.analysis); setVerified(true);
       setGraphId(previous => projectGraphs(data.analysis, cached?.references).some(g => g.id === previous) ? previous : projectGraphs(data.analysis, cached?.references)[0]?.id || '');
-      if (!fromHost) { try { compatibleStorage(localStorage)?.setItem('langcontour:lastRoot', data.project.root); } catch { /* Optional preview preference. */ } }
+      if (!fromHost) { try { compatibleStorage(localStorage)?.setItem('dsh-langgraph-canvas:lastRoot', data.project.root); } catch { /* Optional preview preference. */ } }
 
     } catch (e) { if (current === generation.current) setError((e as Error).message); }
     finally { if (current === generation.current) setBusy(false); }

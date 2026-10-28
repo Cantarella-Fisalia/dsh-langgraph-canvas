@@ -27,7 +27,7 @@ async function serve() {
 }
 
 test('durable source review survives restart; only reviewed confirmation applies, stale undo is blocked and confirmed undo restores bytes', async () => {
-  const prefix = join(tmpdir(), 'langcontour-tx-api-');
+  const prefix = join(tmpdir(), 'dsh-langgraph-canvas-tx-api-');
   const directory = await mkdtemp(prefix);
   await writeFile(join(directory, 'graph.py'), source);
   let runtime = await serve();

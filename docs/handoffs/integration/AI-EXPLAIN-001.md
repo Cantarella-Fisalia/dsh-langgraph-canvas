@@ -10,7 +10,7 @@
 | 插件 | **0.5.0**（`index.js` `3437EAAC…`，新增 `analysis-adapter.js` `79026DE0…`） |
 | 前端产物 | `apps/frontend/dist`（index.html `B1FCCB3E…`，bundle `6A113E17…`） |
 | 宿主运行时 | Node 24.21.0；Python 3.12.3 |
-| 隔离实例 | `DSH_HOME=.dsh-test`，profile `langcontour-test`，端口 61999 |
+| 隔离实例 | `DSH_HOME=.dsh-test`，profile `dsh-langgraph-canvas-test`，端口 61999 |
 | 桌面应用 | **仍是 0.3.0**（10-26 09:42 启动，早于本批 11:10 的宿主改动） |
 
 ## 2. 独立验证
@@ -22,7 +22,7 @@
 | 3 | 插件侧 `behavior-adapter.test.mjs` | **7/7 通过**（回归未破） |
 | 4 | 插件预检（11 项） | **11/11 通过** |
 | 5 | 隔离实例加载 | `v0.5.0`、`backend ready`、`behavior.available=true` |
-| 6 | `GET /langcontour/api/v1/analysis-support` | 200，`available:true`，消息注明"只读源码，不执行或修改项目" |
+| 6 | `GET /dsh-langgraph-canvas/api/v1/analysis-support` | 200，`available:true`，消息注明"只读源码，不执行或修改项目" |
 | 7 | 未确认就提交 `POST /projects/:id/analysis-tasks` | **400 `CONFIRMATION_REQUIRED`**，消息要求明确点击开始 |
 | 8 | 原生界面 | 「AI 深度解析」「看懂这套流程」「用 AI 解释架构」正常渲染；覆盖计数 `State 0/5 项`、`分支条件 0/2 条`；字段显示"用途待解读"；`state.py:4` 证据入口可见 |
 
@@ -37,7 +37,7 @@
 ## 4. 未验证（如实记录）
 
 1. **真实模型解读**：我没有点击「开始」——会读取项目源码并调用用户默认模型（真实计费、真实请求）。解释质量、六轮/五分钟预算、取消与缓存失效后的重新分析，均以甲方受控提供方记录为准，需用户实际试用。
-2. **桌面验收**：桌面应用仍是 0.3.0（09:42 启动），本批宿主改动（11:10）未加载；`/langcontour/api/v1/analysis-support` 在桌面应 404。**需完全退出重开**。
+2. **桌面验收**：桌面应用仍是 0.3.0（09:42 启动），本批宿主改动（11:10）未加载；`/dsh-langgraph-canvas/api/v1/analysis-support` 在桌面应 404。**需完全退出重开**。
 3. 缓存二次读取的证 据重校验、旧缓存提示重新分析的界面路径，我未逐项点击验证。
 
 ## 5. 结论

@@ -17,7 +17,7 @@ npm.cmd run build
 npm.cmd run acceptance:preflight
 ```
 
-可指定报告位置，例如 `npm.cmd run acceptance:preflight -- --report .tmp/acceptance/recheck.json`；Node 24+、Python 3.11+，解释器选择与插件相同（LANGCONTOUR_PYTHON / 本机 D:/Anaconda/python.exe / python）。
+可指定报告位置，例如 `npm.cmd run acceptance:preflight -- --report .tmp/acceptance/recheck.json`；Node 24+、Python 3.11+，解释器选择与插件相同（DSH_LANGGRAPH_CANVAS_PYTHON / 本机 D:/Anaconda/python.exe / python）。
 
 预检启动自己的随机端口 HTTP 服务，加载实际插件模块并提供最小 webServer/effect 测试上下文，路由到真实后端与 Python worker；检查生产 HTML/JS/CSS 摘要、来源、API 前缀、循环／汇合／路由示例、State、SSE、布局、确认生成、审阅摘要、应用、外部冲突、逐字节撤销、持久记录以及卸载。只修改三个示例的自有临时副本，结束后清理。
 

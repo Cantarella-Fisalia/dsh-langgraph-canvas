@@ -14,7 +14,7 @@ const repoRoot = fileURLToPath(new URL('../../../', import.meta.url));
 const SOURCE = 'from typing import TypedDict\nfrom langgraph.graph import StateGraph, START, END\nclass State(TypedDict):\n    question: str\n    answer: str\ndef work(state):\n    return {"answer": "old"}\ng = StateGraph(State)\ng.add_node("work", work)\ng.add_edge(START, "work")\ng.add_edge("work", END)\napp = g.compile()\n';
 const wait = (ms: number) => new Promise(done => setTimeout(done, ms));
 async function fixture(adapter?: HarnessBehaviorAdapter, timeoutMs?: number) {
-  const prefix = join(tmpdir(), 'langcontour-behavior-api-');
+  const prefix = join(tmpdir(), 'dsh-langgraph-canvas-behavior-api-');
   const directory = await mkdtemp(prefix);
   await writeFile(join(directory, 'graph.py'), SOURCE);
   let app: ReturnType<typeof createApplication>, server: ReturnType<typeof createServer>, base: string;
@@ -55,7 +55,7 @@ async function fixture(adapter?: HarnessBehaviorAdapter, timeoutMs?: number) {
       await stop();
       for (const workspace of workspaces) {
         const target = resolve(workspace);
-        assert.equal(resolve(tmpdir()), resolve(target, '..')); assert.ok(target.split(/[\\/]/).at(-1)!.startsWith('langcontour-behavior-'));
+        assert.equal(resolve(tmpdir()), resolve(target, '..')); assert.ok(target.split(/[\\/]/).at(-1)!.startsWith('dsh-langgraph-canvas-behavior-'));
         await rm(target, { recursive: true, force: true });
       }
       assert.ok(resolve(directory).startsWith(resolve(prefix))); await rm(directory, { recursive: true, force: true });

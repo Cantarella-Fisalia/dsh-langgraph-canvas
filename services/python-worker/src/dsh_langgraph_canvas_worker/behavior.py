@@ -23,7 +23,7 @@ ACTIVE = {'submitting', 'queued', 'running', 'cancelling', 'needs_attention'}
 TERMINAL = {'cancelled', 'review_ready', 'failed', 'conflicted'}
 from .legacy import BEHAVIOR_PREFIXES, behavior_marker
 
-MARKER = '.langcontour-owner.json'
+MARKER = '.dsh-langgraph-canvas-owner.json'
 
 
 def decoded(raw):
@@ -211,7 +211,7 @@ class BehaviorTasks:
             for file, raw in before_files.items():
                 content, _ = decoded(raw); before.modules[file] = (ast.parse(content), content)
             old_graph = next(g for g in before.analyze_file(parent['graphId'].split('::')[0]) if g['id'] == parent['graphId'])
-            directory = Path(tempfile.mkdtemp(prefix='langcontour-behavior-')).resolve()
+            directory = Path(tempfile.mkdtemp(prefix='dsh-langgraph-canvas-behavior-')).resolve()
             check(directory.parent == Path(tempfile.gettempdir()).resolve(), 'UNSAFE_WORKSPACE', '临时目录不在指定位置。')
             owner = canonical({'taskId': task_id, 'token': secrets.token_hex(24)})
             (directory / MARKER).write_text(owner, encoding='utf-8')

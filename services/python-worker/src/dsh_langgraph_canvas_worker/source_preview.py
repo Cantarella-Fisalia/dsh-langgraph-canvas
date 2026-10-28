@@ -186,7 +186,7 @@ def generate(root, graph_id, base_revision, target, include_bytes=False):
         descriptions = [n.get('description', '') for n in new_nodes.values() if n['functionRef'] == ref]
         description = '\n'.join(d for d in descriptions if d) or '待实现的 LangGraph 路由函数。'
         definitions.append(indent + 'def ' + ref + '(state):' + src.newline + indent + '    ' + quote(description) + src.newline +
-                           indent + '    raise NotImplementedError(' + quote('langcontour: implement ' + ref) + ')' + src.newline + src.newline)
+                           indent + '    raise NotImplementedError(' + quote('dsh-langgraph-canvas: implement ' + ref) + ')' + src.newline + src.newline)
         placeholders.append(ref)
     for identity, old in old_nodes.items():
         require(old.get('registration'), '存在未注册的节点，无法修改。')
@@ -321,7 +321,7 @@ def generate(root, graph_id, base_revision, target, include_bytes=False):
     # Resolve may have read additional files. No such file is written or imported.
     require(set(analyzer.hashes) == set(sources), '存在快照之外的依赖，请先整理项目后重试。')
     outputs = {file: source.render() for file, source in sources.items()}
-    with tempfile.TemporaryDirectory(prefix='langcontour-source-preview-') as directory:
+    with tempfile.TemporaryDirectory(prefix='dsh-langgraph-canvas-source-preview-') as directory:
         snapshot = Path(directory)
         for file, raw in outputs.items():
             out = confined(snapshot, file)

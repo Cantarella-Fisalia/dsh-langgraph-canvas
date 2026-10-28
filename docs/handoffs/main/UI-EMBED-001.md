@@ -17,7 +17,7 @@
 - npm test：6 项 Node（含工作区优先级、目录切换、主题消息、来源限制、原生入口注册与主区域切换）及 9 项 Python 检查通过。
 - npm run build：TypeScript 检查和 Vite 生产构建通过。React Flow 的 use client 打包提示不影响产物生成。
 - 本机安装的 Harness 客户端运行时 0.2.1-rc.2：核对官方插槽、layout、theme 和标准状态 hook 接口。
-- 使用独立 DSH_HOME / langcontour-ui profile、端口 62001；未复制账号／模型配置，未重启用户桌面实例。
+- 使用独立 DSH_HOME / dsh-langgraph-canvas-ui profile、端口 62001；未复制账号／模型配置，未重启用户桌面实例。
 - 实际点击空白会话顶部入口后，架构显示在 Harness 主区域；自动读取默认工作区目录（0 Python 文件），未要求输入目录；浅色和深色切换均同步。
 
 ![原生浅色视图](UI-EMBED-001-light.png)

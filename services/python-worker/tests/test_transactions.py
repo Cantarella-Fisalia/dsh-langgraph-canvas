@@ -6,8 +6,8 @@ import unittest
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'src'))
-from langcontour_worker.analysis import Analyzer
-from langcontour_worker.transactions import Transactions, TransactionError
+from dsh_langgraph_canvas_worker.analysis import Analyzer
+from dsh_langgraph_canvas_worker.transactions import Transactions, TransactionError
 
 GRAPH = '''from langgraph.graph import StateGraph, START, END
 from schema import State
@@ -24,7 +24,7 @@ SCHEMA = 'from typing import TypedDict\nclass State(TypedDict):\n    question: s
 
 class TransactionsTests(unittest.TestCase):
     def fixture(self):
-        temporary = tempfile.TemporaryDirectory(prefix='langcontour-transaction-test-')
+        temporary = tempfile.TemporaryDirectory(prefix='dsh-langgraph-canvas-transaction-test-')
         self.addCleanup(temporary.cleanup)
         root = Path(temporary.name)
         (root / 'graph.py').write_bytes(GRAPH.replace('\n', '\r\n').encode('utf-8-sig'))

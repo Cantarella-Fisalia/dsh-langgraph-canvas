@@ -1,5 +1,5 @@
 import { spawn } from 'node:child_process';
-import { mkdir, mkdtemp, rm } from 'node:fs/promises';
+import { mkdir, mkdtemp, rm, copyFile, cp } from 'node:fs/promises';
 import { join, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -18,6 +18,11 @@ async function run(args) {
 try {
   const checked = await run(['node_modules/typescript/bin/tsc', '--noEmit']);
   process.exitCode = checked || await run(['node_modules/vite/bin/vite.js', 'build', '--config', 'apps/frontend/vite.config.ts']);
+  if (!process.exitCode) {
+    const output = join(root, 'apps/frontend/dist');
+    await copyFile(join(root, 'THIRD_PARTY_NOTICES.md'), join(output, 'THIRD_PARTY_NOTICES.md'));
+    await cp(join(root, 'third_party_licenses'), join(output, 'third_party_licenses'), { recursive: true });
+  }
 } finally {
   // Only remove the directory this invocation created inside the build temp root.
   const path = resolve(temporary);

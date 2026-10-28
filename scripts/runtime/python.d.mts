@@ -1,6 +1,6 @@
 export const MINIMUM_PYTHON: '3.11';
 export function resolvePythonCommand(command?: string, options?: {
-  env?: { LANGCONTOUR_PYTHON?: string; VIS4AGENT_PYTHON?: string }; exists?: (path: string) => boolean;
+  env?: { DSH_LANGGRAPH_CANVAS_PYTHON?: string; LANGCONTOUR_PYTHON?: string; VIS4AGENT_PYTHON?: string }; exists?: (path: string) => boolean;
 }): string;
 export function checkPythonVersion(info: unknown, command: string): { command: string; executable: string; version: string };
 export function probePython(command?: string, options?: {

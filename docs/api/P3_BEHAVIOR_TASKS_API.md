@@ -20,7 +20,7 @@ GET /behavior-support?sessionId=... 返回 available（可监视）与可选 can
 
 ## 2. HTTP 接口
 
-基础 `/api/v1`；Harness 嵌入 `/langcontour/api/v1`，沿用现有同源委托。
+基础 `/api/v1`；Harness 嵌入 `/dsh-langgraph-canvas/api/v1`，沿用现有同源委托。
 
 | 方法 | 路径 | 返回／用途 |
 |---|---|---|
@@ -91,7 +91,7 @@ assignment 字段：
 
 ## 4. 临时副本与静态验收
 
-自有 OS 临时目录前缀 `langcontour-behavior-*`，带所有权标记；复制静态分析中的 Python 源码，最多 16 MiB、单文件 2 MiB，沿用扫描上限。不复制 `.git`、环境、密钥配置、依赖或数据资产，故**不是可直接运行的完整项目副本**。需要依赖或其他文件时本版会拒绝或要求用户先手动准备，不能悄悄扩大读取范围。
+自有 OS 临时目录前缀 `dsh-langgraph-canvas-behavior-*`，带所有权标记；复制静态分析中的 Python 源码，最多 16 MiB、单文件 2 MiB，沿用扫描上限。不复制 `.git`、环境、密钥配置、依赖或数据资产，故**不是可直接运行的完整项目副本**。需要依赖或其他文件时本版会拒绝或要求用户先手动准备，不能悄悄扩大读取范围。
 
 验收会：
 
@@ -132,7 +132,7 @@ SSE 增加 `behavior.changed` 通知，不承载模型代码或伪造进度百�
 
 ## 7. 当前真实 Harness 适配（HARNESS-COMPLETE-001）
 
-正式路径 `plugins/harness/lib/behavior-adapter.js`；宿主 `lib/index.js` 注入，并在卸载时先 await adapter.close()，再关闭后端。当前版本插件 0.3.0，核对本机 Harness 0.2.1-rc.2 的实际源码与运行时。用 ctx.get('llm')、ctx.get('agentDefaultModel') 读宿主服务，默认选择来自 currentSelection()；调用 llm.stream({provider, model, reasoningEffort?, messages, tools:[], signal})。没有新建普通会话或 agents.create 的 Agent，任务只在插件“行为任务”显示；hostTaskId 是已持久登记的插件宿主任务 ID `langcontour-<taskId>`，不冒充 Harness 会话编号。
+正式路径 `plugins/harness/lib/behavior-adapter.js`；宿主 `lib/index.js` 注入，并在卸载时先 await adapter.close()，再关闭后端。当前版本插件 0.3.0，核对本机 Harness 0.2.1-rc.2 的实际源码与运行时。用 ctx.get('llm')、ctx.get('agentDefaultModel') 读宿主服务，默认选择来自 currentSelection()；调用 llm.stream({provider, model, reasoningEffort?, messages, tools:[], signal})。没有新建普通会话或 agents.create 的 Agent，任务只在插件“行为任务”显示；hostTaskId 是已持久登记的插件宿主任务 ID `dsh-langgraph-canvas-<taskId>`，不冒充 Harness 会话编号。
 
 模型没有文件、终端或执行能力，返回明确 JSON 文件集合；adapter 使用 workingDirectory 的绝对路径做读写，不切换用户工作区、不传原项目作为编码目录。写入前核对所有权、相对路径、链接、文件集合和所有输入摘要。副本写完且无待写操作后才返回 succeeded；原项目写回仍只经过事务确认。
 

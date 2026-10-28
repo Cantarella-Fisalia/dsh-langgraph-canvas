@@ -5,7 +5,7 @@
 ## 独立服务
 
 - 启动：npm.cmd run dev:api。默认仅监听 127.0.0.1:4318。
-- 环境：LANGCONTOUR_PORT、LANGCONTOUR_PYTHON（解释器可执行文件路径，不是附带参数的 shell 命令）。
+- 环境：DSH_LANGGRAPH_CANVAS_PORT、DSH_LANGGRAPH_CANVAS_PYTHON（解释器可执行文件路径，不是附带参数的 shell 命令）。
 - 协议：JSON UTF-8；请求体上限 1 MB，源码文件上限 2 MiB，每项目最多扫描 500 个 Python 文件。
 - 项目注册保存在内存；服务重启后重新打开项目，画布位置仍从项目布局文件恢复。
 - 项目目录由用户显式输入，不执行项目；读取布局时可能创建 .vislang 目录。
@@ -64,7 +64,7 @@ import { createApplication } from './apps/backend/src/application.ts'
 const application = createApplication({
   repoRoot: 'E:/Heng/vis4agent',
   pythonCommand: 'D:/Anaconda/python.exe',
-  apiPrefix: '/langcontour/api/v1',
+  apiPrefix: '/dsh-langgraph-canvas/api/v1',
   allowedOrigins: ['dsh-app://app']
 })
 // 宿主路由委托 application.handler(req, res)，返回 false 表示不匹配该前缀。
@@ -75,13 +75,13 @@ const application = createApplication({
 
 前端是独立 React 应用，其 dist 可通过宿主同源静态路径和 iframe 挂载。不要把标准 Vite 产物直接当成 __ModuleLoader__ 的客户端插件；Harness 包内的 client/client.js 仍由乙方封装入口。
 
-配置 API base URL 可采用页面加载前的 window.__LANGCONTOUR_CONFIG__ = { apiBase: '/langcontour/api/v1' }，或 iframe URL 查询参数 ?apiBase=/langcontour/api/v1。Vite 使用相对静态资源路径，允许挂载在子路径。宿主需处理目录首页与静态资源路径。
+配置 API base URL 可采用页面加载前的 window.__DSH_LANGGRAPH_CANVAS_CONFIG__ = { apiBase: '/dsh-langgraph-canvas/api/v1' }，或 iframe URL 查询参数 ?apiBase=/dsh-langgraph-canvas/api/v1。Vite 使用相对静态资源路径，允许挂载在子路径。宿主需处理目录首页与静态资源路径。
 
 前端调用同源 HTTP/SSE，不应把 Harness 私有 token 写入页面配置。是否以 iframe 挂载、宿主路由如何继承鉴权，需乙方在桌面端验证。核心交付没有启动、修改或重装桌面 profile。
 
 ## Python 工作进程
 
-命令：python -u -m langcontour_worker，PYTHONPATH 指向 services/python-worker/src；后端会设置此环境变量。无额外 Python 依赖。
+命令：python -u -m dsh_langgraph_canvas_worker，PYTHONPATH 指向 services/python-worker/src；后端会设置此环境变量。无额外 Python 依赖。
 
 一行一个 JSON 请求：{ schemaVersion: 1, id, method: "analyze"|"source", params: { root, file? } }。
 响应：{ schemaVersion: 1, id, result } 或 { schemaVersion: 1, id, error: { code, message } }。

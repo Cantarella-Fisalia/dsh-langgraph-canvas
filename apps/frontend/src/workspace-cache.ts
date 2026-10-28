@@ -6,7 +6,7 @@ export interface WorkspaceView {
   project: Project; analysis: ProjectAnalysis; graphId: string; references: boolean;
   layouts: Record<string, { revision: string; value: Layout }>;
 }
-const PREFIX = 'langcontour:workspace-view:v1:';
+const PREFIX = 'dsh-langgraph-canvas:workspace-view:v1:';
 const MAX_ENTRY = 1_500_000, MAX_TOTAL = 2_000_000, MAX_AGE = 24 * 60 * 60 * 1000;
 export function workspaceStorage(): StorageLike | undefined { try { return window.sessionStorage; } catch { return undefined; } }
 export function validLayout(value: any): value is Layout {

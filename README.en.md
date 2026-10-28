@@ -1,12 +1,15 @@
-# LangContour
+# dsh-langgraph-canvas
 
 <p align="center">
   <a href="README.md">简体中文</a> | <strong>English</strong>
 </p>
 
+> **Unofficial project: independently maintained community software, not affiliated with, sponsored by, partnered with, or endorsed by DeepSeek, DeepSeek Harness, LangChain, or the LangGraph maintainers. Their names identify compatibility only. All third-party trademarks and copyrights belong to their respective owners.**
+
+
 A LangGraph visual development plugin for **DeepSeek Harness Desktop**. Read Python source files from your workspace, inspect State, nodes, conditional branches, and graph calls in the conversation's architecture view, and update your project through drafts, diff review, and confirmed changes.
 
-Currently in developer preview. Harness plugin version: **0.7.0**. This is a community plugin.
+Currently in developer preview. Harness plugin version: **0.8.0**. This is a community plugin.
 
 ## Features
 
@@ -26,8 +29,8 @@ Requires **Node.js 24+**, **Python 3.11+**, and a working DeepSeek Harness Deskt
 This repository is a monorepo containing the frontend, backend, and Python worker. The plugin entry point is in `plugins/harness`. Clone and build the full repository, then install that subdirectory as a local link. The repository root is not a standalone installable bundle.
 
 ```powershell
-git clone https://github.com/Cantarella-Fisalia/langcontour.git
-cd langcontour
+git clone https://github.com/Cantarella-Fisalia/dsh-langgraph-canvas.git
+cd dsh-langgraph-canvas
 npm.cmd ci
 npm.cmd run build
 $pluginPath = (Resolve-Path ./plugins/harness).Path.Replace('\', '/')
@@ -36,13 +39,13 @@ dsh plugin --profile desktop add "link:$pluginPath"
 
 If `dsh` is not on PATH, run the same plugin command using the DSH CLI bundled with the desktop application. Fully quit and reopen the desktop application, open your project workspace, and select “架构” (Architecture) beside the conversation and trace tabs. The plugin shares the current workspace directory and follows the Harness theme.
 
-If multiple Python versions are installed, set `LANGCONTOUR_PYTHON` in the environment used to launch Harness to point to Python 3.11+. See the [user guide](USER_GUIDE.md) for detailed instructions and limitations. The interface and the linked guides are currently in Chinese.
+If multiple Python versions are installed, set `DSH_LANGGRAPH_CANVAS_PYTHON` in the environment used to launch Harness to point to Python 3.11+. See the [user guide](USER_GUIDE.md) for detailed instructions and limitations. The interface and the linked guides are currently in Chinese.
 
 ## Upgrading from the previous name
 
-LangContour was previously named vis4agent. If the old package is installed, remove its entry in Harness plugin management, link the new plugins/harness package using the instructions above, and fully restart the desktop application. Load only one version of the plugin.
+The project was previously named LangContour and vis4agent. Its canonical name is now dsh-langgraph-canvas. If the old package is installed, remove its entry in Harness plugin management, link the new plugins/harness package using the instructions above, and fully restart the desktop application. Load only one version of the plugin.
 
-Existing layouts, AI caches, behavior journals, and source transactions stay in the project's .vislang directory. Existing browser preferences, structure drafts, and uncertain task receipts remain readable; renaming never automatically resubmits an uncertain request. Use LANGCONTOUR_PYTHON for new configuration; VIS4AGENT_PYTHON remains a fallback. The existing development checkout stays accessible at its current location, while new clones use langcontour.
+Existing layouts, AI caches, behavior journals, and source transactions stay in the project's .vislang directory. Existing browser preferences, structure drafts, and uncertain task receipts remain readable; renaming never automatically resubmits an uncertain request. Use DSH_LANGGRAPH_CANVAS_PYTHON for new configuration; LANGCONTOUR_PYTHON and VIS4AGENT_PYTHON remain fallbacks, in that order. The existing development checkout stays accessible at its current location, while new clones use dsh-langgraph-canvas.
 
 ## Development and checks
 
@@ -77,10 +80,10 @@ MCP, RAG, Tools, and Skills currently have reserved interfaces and directories; 
 - [User guide and first-run testing](USER_GUIDE.md)
 - [Development handoff](docs/DEVELOPMENT_HANDOFF.md)
 - [Public release and installation scope](docs/GITHUB_PUBLICATION.md)
-- [Report an issue](https://github.com/Cantarella-Fisalia/langcontour/issues)
+- [Report an issue](https://github.com/Cantarella-Fisalia/dsh-langgraph-canvas/issues)
 
 The repository uses the `dsh-plugin` topic required for discovery, together with topics such as `deepseek-harness` and `langgraph`. Topics support discovery and do not imply official endorsement or guaranteed desktop compatibility. Raw runtime logs, screenshots, conversation caches, and local configuration are excluded from the repository. Some attachments referenced by historical handoff documents may only be available on the development machine.
 
 ## License
 
-[MIT](LICENSE)
+[MIT](LICENSE). This license grants no third-party trademark rights or official endorsement. Dependencies retain their own licenses. See [third-party notices](THIRD_PARTY_NOTICES.md) and the [copyright and branding review](docs/IP_AND_BRAND_REVIEW.md) (Chinese).

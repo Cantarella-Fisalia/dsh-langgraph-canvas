@@ -26,7 +26,7 @@
 
 ## 3. 路由
 
-基础前缀仍为 `/api/v1`，嵌入前缀 `/langcontour/api/v1`，使用现有同源宿主委托，不需要添加私有 Harness 调用。
+基础前缀仍为 `/api/v1`，嵌入前缀 `/dsh-langgraph-canvas/api/v1`，使用现有同源宿主委托，不需要添加私有 Harness 调用。
 
 | 方法 | 路径 | 用途 |
 |---|---|---|

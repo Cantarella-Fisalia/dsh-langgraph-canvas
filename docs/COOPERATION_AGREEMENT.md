@@ -1,4 +1,4 @@
-# LangContour（图廓）双方协作协议
+# dsh-langgraph-canvas双方协作协议
 
 版本：1.0  
 生效日期：2026-10-23  

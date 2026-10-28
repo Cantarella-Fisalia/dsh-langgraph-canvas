@@ -8,7 +8,7 @@ export function resolvePythonCommand(command, { env = process.env, exists = exis
     || (exists('D:/Anaconda/python.exe') ? 'D:/Anaconda/python.exe' : 'python');
 }
 function failure(code, message) { return Object.assign(new Error(message), { code, status: 503 }); }
-const guidance = '请将 LANGCONTOUR_PYTHON 设置为 Python 3.11+ 解释器的路径，然后重新启动。';
+const guidance = '请将 DSH_LANGGRAPH_CANVAS_PYTHON 设置为 Python 3.11+ 解释器的路径，然后重新启动。';
 export function checkPythonVersion(info, command) {
   if (!Array.isArray(info?.version) || info.version.length < 3 || !info.version.every(Number.isInteger)
     || typeof info.executable !== 'string' || !info.executable) {
