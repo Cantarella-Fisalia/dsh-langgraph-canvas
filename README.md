@@ -1,5 +1,9 @@
 # vis4agent
 
+<p align="center">
+  <strong>简体中文</strong> | <a href="README.en.md">English</a>
+</p>
+
 面向 **DeepSeek Harness 桌面端**的 LangGraph 可视化开发插件。直接读取工作区里的 Python 源码，在会话的“架构”视图中查看 State、节点、条件分支与图间调用，并通过草稿、差异审阅和确认应用来修改项目。
 
 当前为开发预览版，Harness 插件版本 **0.6.7**。本项目是社区插件。
