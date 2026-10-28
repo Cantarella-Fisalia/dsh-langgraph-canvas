@@ -9,7 +9,7 @@
 |---|---|
 | 插件 | **0.6.0**（`index.js` `8F6482B2…`，新增 `session-channel.js` `2FFAA2F3…`） |
 | 前端产物 | bundle `1875FFD2…` |
-| 隔离实例 | `.dsh-test / vis4agent-test`，端口 61999 |
+| 隔离实例 | `.dsh-test / langcontour-test`，端口 61999 |
 | 桌面应用 | **仍 0.3.0**（10-26 09:42 启动，早于本批 13:40 的宿主改动） |
 
 ## 2. 验证结果

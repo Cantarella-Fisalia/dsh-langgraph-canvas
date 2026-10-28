@@ -1,3 +1,4 @@
+import { compatibleStorage } from './legacy-storage.ts';
 import type { Project, ProjectAnalysis, Layout } from '../../../packages/contracts/src/index.ts';
 import { validateAnalysis } from '../../../packages/contracts/src/validation.ts';
 type StorageLike = Pick<Storage, 'getItem' | 'setItem' | 'removeItem'>;
@@ -5,7 +6,7 @@ export interface WorkspaceView {
   project: Project; analysis: ProjectAnalysis; graphId: string; references: boolean;
   layouts: Record<string, { revision: string; value: Layout }>;
 }
-const PREFIX = 'vis4agent:workspace-view:v1:';
+const PREFIX = 'langcontour:workspace-view:v1:';
 const MAX_ENTRY = 1_500_000, MAX_TOTAL = 2_000_000, MAX_AGE = 24 * 60 * 60 * 1000;
 export function workspaceStorage(): StorageLike | undefined { try { return window.sessionStorage; } catch { return undefined; } }
 export function validLayout(value: any): value is Layout {
@@ -14,6 +15,7 @@ export function validLayout(value: any): value is Layout {
 }
 /** Disposable display snapshots; never a source-of-truth for edits or model requests. */
 export function createWorkspaceCache(apiBase: string, storage?: StorageLike, clock = Date.now) {
+  storage = compatibleStorage(storage);
   const memory = new Map<string, { savedAt: number; data: WorkspaceView }>();
   const indexKey = PREFIX + 'index:' + apiBase;
   const keyFor = (root: string) => PREFIX + JSON.stringify([apiBase, root.trim().replaceAll('\\', '/').replace(/\/$/, '')]);

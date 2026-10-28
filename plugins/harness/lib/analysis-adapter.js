@@ -63,7 +63,7 @@ All graph/node/field/edge references must match staticGraphs or new inferred gra
           : recheckingEvidence ? `AI 已补读缺失区间，正在当前会话重新核对解读（第 ${round + 1}/6 轮）；只读，不改源码。`
           : `AI 正在追踪图关系、State 与分支条件（第 ${round + 1}/6 轮）；只读，不改源码。`)
         const native = await channel.request(session, { signal,
-          text: round === 0 ? '请在本会话完成 vis4agent 只读架构任务。仅返回约定 JSON，不能执行工具或修改代码。\n' + messages.map(item => item.text).join('\n\n') : '继续本会话的 vis4agent 架构任务，仅返回 JSON。\n' + messages.at(-1).text,
+          text: round === 0 ? '请在本会话完成 langcontour 只读架构任务。仅返回约定 JSON，不能执行工具或修改代码。\n' + messages.map(item => item.text).join('\n\n') : '继续本会话的 langcontour 架构任务，仅返回 JSON。\n' + messages.at(-1).text,
         })
         let result
         let output = native.text.trim()

@@ -58,10 +58,10 @@ async function check(id, run) {
 let ownedRoot, server, streamReader, streamAbort, streamPump;
 let registered, lifecycle;
 const disposers = [];
-const previousRepo = process.env.VIS4AGENT_REPO_ROOT;
+const previousRepo = process.env.LANGCONTOUR_REPO_ROOT;
 try {
   // No user profile, credentials or original example directory is modified.
-  process.env.VIS4AGENT_REPO_ROOT = repo;
+  process.env.LANGCONTOUR_REPO_ROOT = repo;
   const pluginPath = join(repo, 'plugins/harness/lib/index.js');
   async function fingerprint(directory) {
     for (const name of (await readdir(join(repo, directory))).sort()) {
@@ -85,7 +85,7 @@ try {
   await check('plugin-registration', () => {
     apply({
       webServer: { register(route) {
-        assert.equal(route.kind, 'prefix'); assert.equal(route.path, '/vis4agent');
+        assert.equal(route.kind, 'prefix'); assert.equal(route.path, '/langcontour');
         registered = route;
         return () => { registered = undefined; };
       } },
@@ -109,7 +109,7 @@ try {
   });
   await new Promise((done, reject) => { server.once('error', reject); server.listen(0, '127.0.0.1', done); });
   const base = 'http://127.0.0.1:' + server.address().port;
-  const api = '/vis4agent/api/v1';
+  const api = '/langcontour/api/v1';
   async function json(path, body, method = body === undefined ? 'GET' : 'POST', origin = 'dsh-app://app') {
     const response = await fetch(base + api + path, {
       method, headers: { 'content-type': 'application/json', origin },
@@ -118,7 +118,7 @@ try {
     return { status: response.status, body: await response.json() };
   }
   await check('built-static-assets', async () => {
-    const response = await fetch(base + '/vis4agent/app/');
+    const response = await fetch(base + '/langcontour/app/');
     assert.equal(response.status, 200);
     assert.equal(response.headers.get('cache-control'), 'no-cache');
     const html = await response.text();
@@ -126,7 +126,7 @@ try {
     assert.ok(assets.some(a => a.endsWith('.js'))); assert.ok(assets.some(a => a.endsWith('.css')));
     const evidence = [];
     for (const asset of assets) {
-      const url = new URL(asset, base + '/vis4agent/app/');
+      const url = new URL(asset, base + '/langcontour/app/');
       const result = await fetch(url); assert.equal(result.status, 200);
       assert.match(result.headers.get('cache-control') || '', /immutable/);
       const bytes = Buffer.from(await result.arrayBuffer());
@@ -135,9 +135,9 @@ try {
       report.sourceHashes[file] = hash(bytes);
       evidence.push({ file, bytes: bytes.length, sha256: hash(bytes) });
     }
-    const head = await fetch(base + '/vis4agent/app/', { method: 'HEAD' });
+    const head = await fetch(base + '/langcontour/app/', { method: 'HEAD' });
     assert.equal(head.status, 200); assert.equal((await head.arrayBuffer()).byteLength, 0);
-    assert.equal((await fetch(base + '/vis4agent/app/assets/missing.js')).status, 404);
+    assert.equal((await fetch(base + '/langcontour/app/assets/missing.js')).status, 404);
     return evidence;
   });
   await check('api-origin-and-prefix', async () => {
@@ -148,7 +148,7 @@ try {
     assert.equal((await json('/not-a-route')).status, 404);
     return result.body;
   });
-  ownedRoot = await mkdtemp(join(tmpdir(), 'vis4agent-acceptance-'));
+  ownedRoot = await mkdtemp(join(tmpdir(), 'langcontour-acceptance-'));
   const projects = {};
   await check('real-python-examples-in-owned-copies', async () => {
     const evidence = [];
@@ -270,7 +270,7 @@ try {
     const url = new URL(harnessUrl);
     assert.ok(url.protocol === 'http:' && ['localhost', '127.0.0.1', '[::1]'].includes(url.hostname)
       && !url.username && !url.password && !url.search && !url.hash, 'Use a local Harness origin without credentials or query');
-    const response = await fetch(new URL('/vis4agent/api/v1/behavior-support', url), { signal: AbortSignal.timeout(5000) });
+    const response = await fetch(new URL('/langcontour/api/v1/behavior-support', url), { signal: AbortSignal.timeout(5000) });
     if (!response.ok) {
       report.blockers.push({ id: 'HARNESS_READINESS_UNCONFIRMED', message: '宿主能力查询 HTTP ' + response.status });
       return { status: response.status, modelTasksSubmitted: 0 };
@@ -298,8 +298,8 @@ try {
   report.error = { name: error.name, message: error.message };
   console.error('[FAIL] ' + error.message);
 } finally {
-  if (previousRepo === undefined) delete process.env.VIS4AGENT_REPO_ROOT;
-  else process.env.VIS4AGENT_REPO_ROOT = previousRepo;
+  if (previousRepo === undefined) delete process.env.LANGCONTOUR_REPO_ROOT;
+  else process.env.LANGCONTOUR_REPO_ROOT = previousRepo;
   for (const dispose of disposers.toReversed()) {
     try { await dispose(); } catch (error) { report.error ??= { message: 'Disposal failed: ' + error.message }; }
   }
@@ -312,7 +312,7 @@ try {
   if (ownedRoot) {
     try {
       const actual = await realpath(ownedRoot), temp = await realpath(tmpdir());
-      assert.ok(inside(temp, actual) && basename(actual).startsWith('vis4agent-acceptance-'));
+      assert.ok(inside(temp, actual) && basename(actual).startsWith('langcontour-acceptance-'));
       assert.equal(await realpath(dirname(actual)), temp);
       await rm(actual, { recursive: true, force: true });
       report.fixtureCleaned = true;

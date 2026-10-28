@@ -6,8 +6,8 @@ import unittest
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'src'))
-from vislang_worker import deep_analysis as deep
-from vislang_worker.analysis import Analyzer
+from langcontour_worker import deep_analysis as deep
+from langcontour_worker.analysis import Analyzer
 
 
 class DeepAnalysisTests(unittest.TestCase):

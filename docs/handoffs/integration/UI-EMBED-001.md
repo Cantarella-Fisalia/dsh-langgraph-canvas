@@ -9,7 +9,7 @@
 | 项 | 实际值 |
 |---|---|
 | 客户端 bundle | `plugins/harness/client/client.js` 18:03 版（甲方授权修改，`conversation.view` 原生页签 + postMessage 桥） |
-| 宿主半侧 | `plugins/harness/lib/index.js` v0.2.0（本轮未改，仍提供 `/vis4agent/app` 与 `/vis4agent/api/v1`） |
+| 宿主半侧 | `plugins/harness/lib/index.js` v0.2.0（本轮未改，仍提供 `/langcontour/app` 与 `/langcontour/api/v1`） |
 | 前端产物 | `apps/frontend/dist`（18:03 重建） |
 | Harness | 桌面版 0.2.0-rc.2；隔离实例端口 61999 |
 | Node / Python | 24.21.0 / 3.12.3（`D:/Anaconda/python.exe`） |
@@ -41,7 +41,7 @@
 
 ```powershell
 $env:DSH_HOME = 'E:\Heng\vis4agent\.dsh-test'
-dsh --profile vis4agent-test --no-open --port 61999
+dsh --profile langcontour-test --no-open --port 61999
 # 打开日志里的 token 地址：
 #   空白会话 → 顶部「◇ 架构」
 #   侧边栏工作区行右侧按钮「在 <workspace> 中新建会话」→ 顶部「◇ 架构」

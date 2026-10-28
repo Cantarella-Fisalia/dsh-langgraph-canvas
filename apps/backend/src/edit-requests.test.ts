@@ -11,7 +11,7 @@ import type { EditRequestAdapter, ConfirmedEditIntent } from '../../../packages/
 
 const repoRoot = fileURLToPath(new URL('../../../', import.meta.url));
 async function fixture(adapter?: EditRequestAdapter) {
-  const prefix = join(tmpdir(), 'vis4agent-edit-');
+  const prefix = join(tmpdir(), 'langcontour-edit-');
   const directory = await mkdtemp(prefix);
   const source = 'from typing import TypedDict\nfrom langgraph.graph import StateGraph, START, END\nclass State(TypedDict):\n    question: str\ndef work(state):\n    return {}\ng = StateGraph(State)\ng.add_node("work", work)\ng.add_edge(START, "work")\ng.add_edge("work", END)\n';
   await writeFile(join(directory, 'graph.py'), source, 'utf8');

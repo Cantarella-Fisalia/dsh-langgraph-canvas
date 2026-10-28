@@ -33,7 +33,7 @@ export class PythonWorker {
     finally { if (this.startup === starting) { this.startup = undefined; this.startupController = undefined; } }
   }
   private spawnWorker(command: string) {
-    const child = spawn(command, ['-u', '-m', 'vislang_worker'], {
+    const child = spawn(command, ['-u', '-m', 'langcontour_worker'], {
       cwd: this.root, windowsHide: true,
       env: { ...process.env, PYTHONIOENCODING: 'utf-8', PYTHONDONTWRITEBYTECODE: '1',
         PYTHONPATH: [join(this.root, 'services/python-worker/src'), process.env.PYTHONPATH].filter(Boolean).join(delimiter) },

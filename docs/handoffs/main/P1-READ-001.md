@@ -26,7 +26,7 @@ npm.cmd run dev
 # 前端 http://127.0.0.1:5173/；API http://127.0.0.1:4318/api/v1
 ```
 
-VIS4AGENT_PYTHON 可指定解释器路径。TypeScript 与 Python 源码默认使用无 BOM UTF-8。
+LANGCONTOUR_PYTHON 可指定解释器路径。TypeScript 与 Python 源码默认使用无 BOM UTF-8。
 
 ```powershell
 npm.cmd test
@@ -42,7 +42,7 @@ npm.cmd run build
 1. 宿主导入 apps/backend/src/application.ts 的 createApplication，传入 repoRoot 和 apiPrefix。
 2. 将前缀路由交给 application.handler，卸载时调用 application.close。
 3. 将 apps/frontend/dist 作为同源静态页面提供，建议用 iframe 在插件工作区挂载。
-4. 通过 apiBase 查询参数或 __VIS4AGENT_CONFIG__ 指向 /vis4agent/api/v1。
+4. 通过 apiBase 查询参数或 __LANGCONTOUR_CONFIG__ 指向 /langcontour/api/v1。
 5. 保留 Harness client/client.js 的 __ModuleLoader__ 包装，不能直接用 Vite 页面替换这个入口文件。
 6. 在桌面环境验证解释器、工作目录、同源鉴权、SSE、静态资源和生命周期。
 

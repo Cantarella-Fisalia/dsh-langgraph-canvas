@@ -33,7 +33,7 @@ export function buildFlowchart(graph: Pick<EditorGraph, 'nodes' | 'edges'>): Flo
     const key = JSON.stringify([edge.from, edge.route ?? '', edge.source?.file, edge.source?.line, edge.source?.endLine, edge.source?.column]);
     let decision = groups.get(key);
     if (!decision) {
-      decision = { id: allocate(`__vis4agent_decision__${encodeURIComponent(edge.id)}`), from: edge.from, route: edge.route, edges: [] };
+      decision = { id: allocate(`__langcontour_decision__${encodeURIComponent(edge.id)}`), from: edge.from, route: edge.route, edges: [] };
       groups.set(key, decision);
     }
     decision.edges.push(edge); decisionByEdge.set(edge.id, decision);

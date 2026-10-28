@@ -4,7 +4,7 @@
 
 ## 1. 完成交付
 
-正式适配路径 `plugins/harness/lib/behavior-adapter.js`，宿主 index.js 注入 createApplication。实际使用本机 Harness 的 `llm.stream` 和 `agentDefaultModel.currentSelection()`，跟随全局默认模型，凭据与请求由 Harness 管理。没有另建普通会话／Agent，不冒充官方会话编号；`vis4agent-<taskId>` 是插件持久登记的宿主模型生成任务 ID，在插件行为面板显示。
+正式适配路径 `plugins/harness/lib/behavior-adapter.js`，宿主 index.js 注入 createApplication。实际使用本机 Harness 的 `llm.stream` 和 `agentDefaultModel.currentSelection()`，跟随全局默认模型，凭据与请求由 Harness 管理。没有另建普通会话／Agent，不冒充官方会话编号；`langcontour-<taskId>` 是插件持久登记的宿主模型生成任务 ID，在插件行为面板显示。
 
 模型只有源码文本与职责上下文，不获得终端／文件／执行工具，只返回 JSON。插件校验自有临时目录所有权、相对路径、文件白名单和输入字节后写临时文件；Python 继续做语法、函数范围、图结构和原项目版本验收。结果先进入待应用事务，单独审阅确认才写原项目；正常撤销恢复字节。前后端分离、原生入口、工作区和主题桥接保留；MCP/RAG/Tools/Skills 仍预留。
 
@@ -26,7 +26,7 @@
 
 61 项自动检查通过（27 Node + 34 Python），类型检查与生产构建通过。新增检查覆盖真实 adapter 的端口、动态就绪、独占幂等、取消／卸载后迟到响应、异常提供方／文件返回、BOM/CRLF、外部副本冲突、进程结束记录恢复、卸载期间登记不迟到启动，以及通过真实后端的生成→静态审阅→应用→撤销。模型流在模块检查中为受控替身。
 
-实际 Harness 0.2.1-rc.2 / Node 24.21.0 隔离 profile `vis4agent-complete`（DSH_HOME 位于 staging/.tmp），使用官方 CLI 及真实 llm 服务注册测试提供方。实际原生网页 UI 已操作：
+实际 Harness 0.2.1-rc.2 / Node 24.21.0 隔离 profile `langcontour-complete`（DSH_HOME 位于 staging/.tmp），使用官方 CLI 及真实 llm 服务注册测试提供方。实际原生网页 UI 已操作：
 
 1. 空会话顶部“◇ 架构”切换原生主区域；测试工作区目录共享，识别 3 个函数节点、5 条边和 TeamState。
 2. 修改 research 职责并生成源码预览；Python 源码摘要未变，宿主任务记录数为 0。

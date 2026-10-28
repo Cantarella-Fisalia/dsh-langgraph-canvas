@@ -1,6 +1,6 @@
 # 只读 AI 深度解析 v1
 
-2026-10-28，插件 v0.6.7，前端自动触发策略 AUTO-ANALYSIS-001。任务协议位于 packages/contracts/src/analysis.ts，架构解读协议位于 packages/contracts/src/explanation.ts；宿主入口 plugins/harness/lib/analysis-adapter.js，经 ApplicationOptions.analysisAdapter 注入。沿用现有同源 API、项目注册和工作区路径约束；嵌入前缀 /vis4agent/api/v1。
+2026-10-28，插件 v0.6.7，前端自动触发策略 AUTO-ANALYSIS-001。任务协议位于 packages/contracts/src/analysis.ts，架构解读协议位于 packages/contracts/src/explanation.ts；宿主入口 plugins/harness/lib/analysis-adapter.js，经 ApplicationOptions.analysisAdapter 注入。沿用现有同源 API、项目注册和工作区路径约束；嵌入前缀 /langcontour/api/v1。
 
 | 路由 | 用途 |
 | --- | --- |

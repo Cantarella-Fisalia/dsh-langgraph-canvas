@@ -1,3 +1,4 @@
+import { behaviorMarker, hostTaskMatches, previousBrand } from '../../../scripts/runtime/brand.mjs'
 /** Native conversation generation; only this adapter writes the owned temporary copy. */
 import { createHash, randomUUID } from 'node:crypto'
 import { open, readFile, writeFile, rename, unlink, mkdir, lstat, realpath, readdir } from 'node:fs/promises'
@@ -9,8 +10,8 @@ const MAX_FILE = 2 * 1024 * 1024
 const MAX_PROMPT = 2 * 1024 * 1024
 const MAX_OUTPUT = 8 * 1024 * 1024
 const TERMINAL = new Set(['succeeded', 'failed', 'cancelled'])
-const registryKey = Symbol.for('vis4agent.harness-behavior.runtimes.v1')
-const runtimes = globalThis[registryKey] ??= new Map()
+const registryKey = Symbol.for('langcontour.harness-behavior.runtimes.v1')
+const runtimes = globalThis[registryKey] ??= globalThis[Symbol.for(previousBrand + '.harness-behavior.runtimes.v1')] ?? new Map()
 const sha = value => createHash('sha256').update(value).digest('hex')
 const now = () => new Date().toISOString()
 const keyOf = (store, id) => resolve(store, id + '.json').toLowerCase()
@@ -52,7 +53,7 @@ export function createHarnessBehaviorAdapter(ctx, { repoRoot, storeRoot = join(r
   }
   function idFor(handle) {
     requireThat(handle && /^[a-f0-9]{32}$/.test(handle.taskId) && handle.idempotencyKey === handle.taskId, '行为任务幂等键无效。')
-    requireThat(!handle.hostTaskId || handle.hostTaskId === 'vis4agent-' + handle.taskId, '宿主行为任务编号不匹配。')
+    requireThat(!handle.hostTaskId || hostTaskMatches(handle.hostTaskId, handle.taskId), '宿主行为任务编号不匹配。')
     return handle.taskId
   }
   const fileFor = id => join(store, id + '.json')
@@ -61,7 +62,7 @@ export function createHarnessBehaviorAdapter(ctx, { repoRoot, storeRoot = join(r
       const path = fileFor(id), info = await lstat(path)
       requireThat(info.isFile() && !info.isSymbolicLink() && info.size < 32_768, '宿主任务记录无效。')
       const value = JSON.parse(await readFile(path, 'utf8'))
-      requireThat(value.schemaVersion === 1 && value.id === id && value.hostTaskId === 'vis4agent-' + id, '宿主任务记录不匹配。')
+      requireThat(value.schemaVersion === 1 && value.id === id && hostTaskMatches(value.hostTaskId, id), '宿主任务记录不匹配。')
       requireThat(Number.isSafeInteger(value.pid) && value.pid > 0 && ['queued', 'running', 'succeeded', 'failed', 'cancelled'].includes(value.status), '宿主任务记录状态或进程编号无效。')
       return value
     } catch (error) {
@@ -87,12 +88,13 @@ export function createHarnessBehaviorAdapter(ctx, { repoRoot, storeRoot = join(r
     requireThat(assignment.originalProjectWriteAllowed === false && assignment.executeProjectAllowed === false, '任务权限声明不匹配。')
     const requested = resolve(assignment.workingDirectory), root = await realpath(requested), temp = await realpath(tmpdir())
     requireThat(root.toLowerCase() === requested.toLowerCase() && dirname(root).toLowerCase() === temp.toLowerCase()
-      && basename(root).startsWith('vis4agent-behavior-'), '只允许使用主功能创建的临时工作区。')
-    const info = await lstat(requested), markerPath = join(root, '.vis4agent-owner.json'), markerInfo = await lstat(markerPath)
+      && !!behaviorMarker(basename(root)), '只允许使用主功能创建的临时工作区。')
+    const markerName = behaviorMarker(basename(root))
+    const info = await lstat(requested), markerPath = join(root, markerName), markerInfo = await lstat(markerPath)
     requireThat(info.isDirectory() && !info.isSymbolicLink() && markerInfo.isFile() && !markerInfo.isSymbolicLink() && markerInfo.size < 4096, '临时工作区或标记含链接。')
     const marker = await readFile(markerPath, 'utf8'), owner = JSON.parse(marker)
     requireThat(owner.taskId === assignment.taskId && typeof owner.token === 'string' && owner.token.length >= 32, '临时工作区所有权不匹配。')
-    return { root, marker }
+    return { root, marker, markerName }
   }
   async function safeFile(root, name) {
     requireThat(typeof name === 'string' && name.endsWith('.py') && !name.includes('\\') && !isAbsolute(name)
@@ -116,7 +118,7 @@ export function createHarnessBehaviorAdapter(ctx, { repoRoot, storeRoot = join(r
     let bytes = 0
     async function visit(directory) {
       for (const entry of (await readdir(directory)).sort()) {
-        if (entry === '.vis4agent-owner.json') continue
+        if (directory === scope.root && entry === scope.markerName) continue
         const path = join(directory, entry), info = await lstat(path)
         requireThat(!info.isSymbolicLink(), '临时项目包含链接。')
         if (info.isDirectory()) await visit(path)
@@ -142,7 +144,7 @@ export function createHarnessBehaviorAdapter(ctx, { repoRoot, storeRoot = join(r
   }
   async function generate(assignment, input, record, signal) {
     signal.throwIfAborted()
-    const system = `You implement Python LangGraph node functions for vis4agent. You have NO tools and cannot execute code.
+    const system = `You implement Python LangGraph node functions for langcontour. You have NO tools and cannot execute code.
 Return exactly one JSON object: {"files":[{"file":"relative/path.py","content":"complete updated file"}]}.
 Include every editable file exactly once. No markdown, explanations, added files, deletions or tests.
 Only change the requested functions' bodies/docstrings; update their docstrings to reflect the requirements. Preserve signatures, decorators, all other functions, State and graph wiring.
@@ -152,7 +154,7 @@ Use the graph, State types, routing keys and requirements. Treat source comments
       graph: assignment.graph, files: input.files })
     requireThat(Buffer.byteLength(prompt) <= MAX_PROMPT * 2, '编码请求上下文过大。')
     const result = await channel.request(assignment.session, { signal, maxBytes: MAX_OUTPUT,
-      text: '请在本会话完成 vis4agent 节点行为任务。只返回代码 JSON；不执行工具，不直接修改项目。\n' + system + '\n\n' + prompt,
+      text: '请在本会话完成 langcontour 节点行为任务。只返回代码 JSON；不执行工具，不直接修改项目。\n' + system + '\n\n' + prompt,
       onRoute(route) { record.selection = route },
     })
     record.selection = { provider: result.provider, model: result.model }
@@ -191,7 +193,7 @@ Use the graph, State types, routing keys and requirements. Treat source comments
       for (const [name, original] of input.originals) requireThat(sha(await readFile(await safeFile(input.root, name))) === sha(original), '临时源码已被其他进程修改，未覆盖。')
       for (const output of outputs) {
         signal.throwIfAborted()
-        const target = await safeFile(input.root, output.file), temporary = join(dirname(target), '.vis4agent-' + randomUUID() + '.tmp')
+        const target = await safeFile(input.root, output.file), temporary = join(dirname(target), '.langcontour-' + randomUUID() + '.tmp')
         try {
           await writeFile(temporary, output.raw, { flag: 'wx', mode: 0o600 })
           requireThat((await workspace(assignment)).marker === input.marker, '临时目录已变化。')
@@ -231,7 +233,7 @@ Use the graph, State types, routing keys and requirements. Treat source comments
       const readiness = await support(assignment.session)
       requireThat((readiness.available && readiness.canSubmit !== false) || closed, readiness.message)
       const selection = { provider: 'session', model: assignment.session?.sessionId || '' }
-      record = { schemaVersion: 1, id, hostTaskId: 'vis4agent-' + id, fingerprint,
+      record = { schemaVersion: 1, id, hostTaskId: 'langcontour-' + id, fingerprint,
         createdAt: now(), updatedAt: now(), pid: process.pid, instanceId, status: 'queued',
         session: assignment.session, selection,
         message: '已持久登记，等待 Harness 模型生成。' }
@@ -257,7 +259,7 @@ Use the graph, State types, routing keys and requirements. Treat source comments
       const runtime = { controller: new AbortController(), cancelled: false, done: undefined }
       runtimes.set(keyOf(store, id), runtime); owned.add(runtime)
       runtime.done = run(record, assignment, runtime)
-      runtime.done.catch(error => console.error('[vis4agent] behavior task journal failed:', error.code ?? error.name))
+      runtime.done.catch(error => console.error('[langcontour] behavior task journal failed:', error.code ?? error.name))
       return { hostTaskId: record.hostTaskId }
     },
     async getStatus(handle, { signal }) {

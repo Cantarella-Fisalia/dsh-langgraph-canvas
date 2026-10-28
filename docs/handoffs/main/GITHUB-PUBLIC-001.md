@@ -2,7 +2,7 @@
 
 日期：2026-10-28。负责方：甲方。状态：已公开发布。用户明确授权初始化／提交 Git 并上传公开 GitHub 仓库。
 
-目标：https://github.com/Cantarella-Fisalia/vis4agent，公开；官方发现 topic 为 dsh-plugin。本批涉及 .gitignore、根及插件 package.json 元数据、锁文件的根 license、LICENSE、公开 README 与安装说明、主计划／交接记录，以及仓库级 Git 提交和 GitHub topics。不修改宿主运行代码或用户工作区。
+目标：https://github.com/Cantarella-Fisalia/langcontour，公开；官方发现 topic 为 dsh-plugin。本批涉及 .gitignore、根及插件 package.json 元数据、锁文件的根 license、LICENSE、公开 README 与安装说明、主计划／交接记录，以及仓库级 Git 提交和 GitHub topics。不修改宿主运行代码或用户工作区。
 
 根目录已有 Git 初始化，但无提交／远程。首个提交只包含经检查的源代码、测试、示例与公开文档；依赖、临时验证目录、会话缓存、调试 overlay、截图／原始运行附件不入库。保留本地文件，不执行删除或清理。
 
@@ -10,7 +10,7 @@
 
 ## 发布结果
 
-- 公开仓库：https://github.com/Cantarella-Fisalia/vis4agent，默认分支 main。
+- 公开仓库：https://github.com/Cantarella-Fisalia/langcontour，默认分支 main。
 - 首次源码提交：a8967fcb4c1705b03d70f55344d782b9b796a3fe；156 个已审阅文件，总计约 1.07 MB。
 - GitHub topics：dsh-plugin, deepseek-harness, dsh, langgraph, ai-agents, multi-agent, visualization, developer-tools，其中 dsh-plugin 为官方发现要求。
 - 类型检查、162 项回归（107 Node＋55 Python）、生产构建和 11 项插件预检通过。

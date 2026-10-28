@@ -9,7 +9,7 @@
 |---|---|
 | 插件 | **0.6.2**（`lib/index.js` `584B3D25…`） |
 | 前端产物 | `index-Bbdg5-So.js`，index.html `0F546CC6…` |
-| 隔离实例 | `.dsh-test / vis4agent-test`，端口 61999 |
+| 隔离实例 | `.dsh-test / langcontour-test`，端口 61999 |
 | 桌面应用 | **0.6.0**（10-26 14:51 启动，早于本批 15:44 的改动） |
 
 ## 2. 验证结果

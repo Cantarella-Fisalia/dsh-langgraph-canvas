@@ -6,8 +6,8 @@ import unittest
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'src'))
-from vislang_worker.analysis import Analyzer
-from vislang_worker.source_preview import generate, shape
+from langcontour_worker.analysis import Analyzer
+from langcontour_worker.source_preview import generate, shape
 
 BASE = '''from typing import TypedDict
 from langgraph.graph import StateGraph, START, END
@@ -29,7 +29,7 @@ app = g.compile()
 
 class SourcePreviewTests(unittest.TestCase):
     def fixture(self, files=None):
-        temporary = tempfile.TemporaryDirectory(prefix='vis4agent-source-test-')
+        temporary = tempfile.TemporaryDirectory(prefix='langcontour-source-test-')
         self.addCleanup(temporary.cleanup)
         root = Path(temporary.name)
         for file, value in (files or {'graph.py': BASE}).items():

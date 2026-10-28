@@ -5,11 +5,11 @@
 ;(function () {
   var loader = window.__ModuleLoader__
   if (!loader || typeof loader.load !== 'function') return
-  var API_BASE = '/vis4agent/api/v1'
-  var APP_PATH = '/vis4agent/app/?embedded=1&apiBase=' + encodeURIComponent(API_BASE)
+  var API_BASE = '/langcontour/api/v1'
+  var APP_PATH = '/langcontour/app/?embedded=1&apiBase=' + encodeURIComponent(API_BASE)
 
   loader.load({
-    id: 'vis4agent',
+    id: 'langcontour',
     factory: function (require) {
       var React = require('react')
       var h = React.createElement
@@ -59,7 +59,7 @@
           var child = frame.current && frame.current.contentWindow
           if (!child) return
           child.postMessage({
-            type: 'vis4agent:host-context',
+            type: 'langcontour:host-context',
             schemaVersion: 1,
             workspaceRoot: root,
             sessionId: sessionId || null,
@@ -70,7 +70,7 @@
         useEffect(function () {
           function ready(event) {
             if (!frame.current || event.source !== frame.current.contentWindow || !sameOrigin(event)) return
-            if (event.data && event.data.type === 'vis4agent:ready' && event.data.schemaVersion === 1) publish()
+            if (event.data && event.data.type === 'langcontour:ready' && event.data.schemaVersion === 1) publish()
           }
           window.addEventListener('message', ready)
           // Theme presenter may commit CSS variables after the theme/change event.
@@ -82,7 +82,7 @@
         }, [publish])
 
         return h('section', {
-          'data-vis4agent-native-view': '',
+          'data-langcontour-native-view': '',
           style: {
             display: 'flex', flex: '1 1 auto', width: '100%', minWidth: 0,
             height: '100%', minHeight: 360,
@@ -140,7 +140,7 @@
         function openArchitecture(sessionId) {
           focusedSession = sessionId
           focusListeners.forEach(function (listener) { listener() })
-          ctx.layout.selectPanel('vis4agent.architecture')
+          ctx.layout.selectPanel('langcontour.architecture')
         }
         var themeSource = {
           getSnapshot: function () { return ctx.theme.getTheme() },
@@ -148,31 +148,31 @@
         }
         ctx.slots.inject('conversation.view', function () {
           return ctx.slots.register({
-            name: 'conversation.view', id: 'vis4agent', order: 20,
+            name: 'conversation.view', id: 'langcontour', order: 20,
             label: function () { return '架构' },
             inject: function () { return { themeSource: themeSource } },
           }, ArchitectureView)
         })
         ctx.slots.inject('main', function () {
           return ctx.slots.register({
-            name: 'main', key: 'vis4agent.architecture',
+            name: 'main', key: 'langcontour.architecture',
             inject: function () { return { themeSource: themeSource, focusSource: focusSource } },
           }, ArchitectureView)
         })
         ctx.slots.inject('conversation.header.leading', function () {
           return ctx.slots.register({
-            name: 'conversation.header.leading', id: 'vis4agent-entry',
+            name: 'conversation.header.leading', id: 'langcontour-entry',
             inject: function () { return { openArchitecture: openArchitecture } },
           }, ArchitectureEntry)
         })
         ctx.slots.inject('settings.section', function () {
           return ctx.slots.register({
-            name: 'settings.section', id: 'vis4agent', order: 40,
-            label: function () { return 'LangGraph 架构' },
+            name: 'settings.section', id: 'langcontour', order: 40,
+            label: function () { return '图廓 · LangGraph 架构' },
           }, StatusPanel)
         })
       }
-      return { name: 'vis4agent', inject: ['slots', 'theme', 'layout'], apply: apply }
+      return { name: 'langcontour', inject: ['slots', 'theme', 'layout'], apply: apply }
     },
   })
 })()

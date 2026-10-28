@@ -1,3 +1,4 @@
+import { compatibleStorage } from './legacy-storage.ts';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import type { FormEvent } from 'react';
 import type { GraphDocument } from '../../../packages/contracts/src/index.ts';
@@ -12,11 +13,11 @@ const boundary = (id: string) => id === '__start__' || id === '__end__';
 function readDraft(key: string, graph: GraphDocument | null): { value: StructureDraft | null; error: string } {
   if (!key || !graph) return { value: null, error: '' };
   try {
-    const text = localStorage.getItem(key);
+    const text = compatibleStorage(localStorage)?.getItem(key);
     if (!text) return { value: null, error: '' };
     const draft = JSON.parse(text) as StructureDraft;
     if (draft.schemaVersion !== 1 || draft.graphId !== graph.id || typeof draft.projectId !== 'string' ||
-        key !== 'vis4agent:structure-draft:' + draft.projectId + ':' + draft.graphId ||
+        key !== 'langcontour:structure-draft:' + draft.projectId + ':' + draft.graphId ||
         typeof draft.baseRevision !== 'string' || typeof draft.requestId !== 'string' || !draft.original?.state ||
         !Array.isArray(draft.original.nodes) || draft.original.nodes.some(n => !n || typeof n.id !== 'string') ||
         typeof draft.original.state.reference !== 'string') throw new Error();
@@ -29,7 +30,7 @@ function readDraft(key: string, graph: GraphDocument | null): { value: Structure
   } catch { return { value: null, error: '已有本地草稿无法读取，原记录未覆盖；可重新编辑建立草稿。' }; }
 }
 export function useStructureDraft(projectId: string | undefined, base: GraphDocument | null) {
-  const key = projectId && base ? 'vis4agent:structure-draft:' + projectId + ':' + base.id : '';
+  const key = projectId && base ? 'langcontour:structure-draft:' + projectId + ':' + base.id : '';
   const recovered = useMemo(() => readDraft(key, base), [key]);
   const [session, setSession] = useState({ key, ...recovered });
   const active = session.key === key ? session : { key, ...recovered };
@@ -41,7 +42,7 @@ export function useStructureDraft(projectId: string | undefined, base: GraphDocu
   useEffect(() => { if (session.key !== key) setSession({ key, ...recovered }); }, [key, recovered, session.key]);
   function persist(value: StructureDraft | null) {
     let error = '';
-    try { if (key) value ? localStorage.setItem(key, JSON.stringify(value)) : localStorage.removeItem(key); }
+    try { if (key) value ? compatibleStorage(localStorage)?.setItem(key, JSON.stringify(value)) : compatibleStorage(localStorage)?.removeItem(key); }
     catch { error = '浏览器未允许保存本地草稿；当前修改只保留在本页，关闭前请勿丢弃。'; }
     setSession({ key, value, error });
   }

@@ -13,19 +13,19 @@ import { resolvePythonCommand, checkPythonVersion, probePython } from '../../../
 const repoRoot = fileURLToPath(new URL('../../../', import.meta.url));
 const legacyPython = 'C:/Users/31675/AppData/Local/Programs/Python/Python37-32/python.exe';
 async function fixture(run: (directory: string) => Promise<void>) {
-  const directory = await mkdtemp(join(tmpdir(), 'vis4agent-python-runtime-'));
+  const directory = await mkdtemp(join(tmpdir(), 'langcontour-python-runtime-'));
   try {
     await writeFile(join(directory, 'graph.py'), 'from langgraph.graph import StateGraph\ng = StateGraph(dict)\n');
     await run(directory);
   } finally {
     assert.equal(resolve(dirname(directory)).toLowerCase(), resolve(tmpdir()).toLowerCase());
-    assert.ok(basename(directory).startsWith('vis4agent-python-runtime-'));
+    assert.ok(basename(directory).startsWith('langcontour-python-runtime-'));
     await rm(directory, { recursive: true, force: true });
   }
 }
 test('interpreter priority is explicit command, environment, installed fallback, then PATH', () => {
-  assert.equal(resolvePythonCommand('explicit', { env: { VIS4AGENT_PYTHON: 'configured' }, exists: () => true }), 'explicit');
-  assert.equal(resolvePythonCommand(undefined, { env: { VIS4AGENT_PYTHON: ' python3.12 ' }, exists: () => true }), 'python3.12');
+  assert.equal(resolvePythonCommand('explicit', { env: { LANGCONTOUR_PYTHON: 'configured' }, exists: () => true }), 'explicit');
+  assert.equal(resolvePythonCommand(undefined, { env: { LANGCONTOUR_PYTHON: ' python3.12 ' }, exists: () => true }), 'python3.12');
   assert.equal(resolvePythonCommand(undefined, { env: {}, exists: () => true }), 'D:/Anaconda/python.exe');
   assert.equal(resolvePythonCommand(undefined, { env: {}, exists: () => false }), 'python');
 });
@@ -33,7 +33,7 @@ test('unsupported Python versions produce a specific 503 with selected interpret
   for (const version of [[3, 7, 9], [3, 10, 15]]) {
     assert.throws(() => checkPythonVersion({ version, executable: 'old-python' }, 'python'), (error: any) =>
       error.code === 'PYTHON_VERSION_UNSUPPORTED' && error.status === 503 && error.message.includes(version.join('.'))
-      && error.message.includes('old-python') && error.message.includes('3.11+') && error.message.includes('VIS4AGENT_PYTHON'));
+      && error.message.includes('old-python') && error.message.includes('3.11+') && error.message.includes('LANGCONTOUR_PYTHON'));
   }
   assert.equal(checkPythonVersion({ version: [3, 11, 0], executable: 'supported' }, 'python').version, '3.11.0');
   assert.throws(() => checkPythonVersion({}, 'python'), (error: any) => error.code === 'PYTHON_INVALID_RESPONSE');
@@ -67,7 +67,7 @@ async function projectsError(pythonCommand: string, expectedCode: string) {
       });
       const body = await response.json();
       assert.equal(response.status, 503, JSON.stringify(body)); assert.equal(body.error.code, expectedCode);
-      assert.match(body.error.message, /VIS4AGENT_PYTHON/);
+      assert.match(body.error.message, /LANGCONTOUR_PYTHON/);
     } finally { app.close(); await new Promise<void>(done => server.close(() => done())); }
   });
 }

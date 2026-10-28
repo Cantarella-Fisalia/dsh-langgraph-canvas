@@ -40,9 +40,9 @@ test('separate router registrations do not collapse and parallel/join edges do n
 });
 
 test('synthetic IDs never collide with source nodes or edges and malformed endpoints are not rendered', () => {
-  const input = graph(['a', 'b', '__vis4agent_decision__edge-0'], [{ from: 'a', to: 'b', kind: 'conditional' }, { from: 'missing', to: 'a' }]);
+  const input = graph(['a', 'b', '__langcontour_decision__edge-0'], [{ from: 'a', to: 'b', kind: 'conditional' }, { from: 'missing', to: 'a' }]);
   const chart = buildFlowchart(input);
-  assert.notEqual(chart.decisions[0].id, '__vis4agent_decision__edge-0');
+  assert.notEqual(chart.decisions[0].id, '__langcontour_decision__edge-0');
   assert.equal(new Set(chart.nodes.map(n => n.id)).size, chart.nodes.length);
   assert.equal(chart.edges.some(e => e.item?.from === 'missing'), false);
 });

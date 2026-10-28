@@ -1,20 +1,20 @@
 # Harness 原生架构视图桥接 v1
 
-入口：conversation.view 的“架构”页签。空白会话由 conversation.header.leading 按钮调用 layout.selectPanel，显示同一个 main 架构组件。前端仍独立构建，经 /vis4agent/app/ 同源 iframe 嵌入；不注册全屏浮层。
+入口：conversation.view 的“架构”页签。空白会话由 conversation.header.leading 按钮调用 layout.selectPanel，显示同一个 main 架构组件。前端仍独立构建，经 /langcontour/app/ 同源 iframe 嵌入；不注册全屏浮层。
 
-iframe URL 使用 embedded=1 和 apiBase=/vis4agent/api/v1。嵌入模式隐藏独立品牌、顶栏和目录输入，不读取独立预览页的 lastRoot。
+iframe URL 使用 embedded=1 和 apiBase=/langcontour/api/v1。嵌入模式隐藏独立品牌、顶栏和目录输入，不读取独立预览页的 lastRoot。
 
 子页就绪后向父窗口发送：
 
 ```json
-{ "type": "vis4agent:ready", "schemaVersion": 1 }
+{ "type": "langcontour:ready", "schemaVersion": 1 }
 ```
 
 宿主在加载、当前会话／工作区或主题变化时发送：
 
 ```json
 {
-  "type": "vis4agent:host-context",
+  "type": "langcontour:host-context",
   "schemaVersion": 1,
   "workspaceRoot": "E:/my-project",
   "theme": {

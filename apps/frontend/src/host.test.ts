@@ -5,7 +5,7 @@ import { runInNewContext } from 'node:vm';
 import { isHostContext, trustedHostMessage } from './host.ts';
 
 const context = {
-  schemaVersion: 1, type: 'vis4agent:host-context', workspaceRoot: 'E:/current-workspace',
+  schemaVersion: 1, type: 'langcontour:host-context', workspaceRoot: 'E:/current-workspace',
   theme: { colorScheme: 'light', tokens: { '--dsw-alias-bg-base': '#ffffff' } },
 };
 test('host context is versioned, typed and limits theme token names', () => {
@@ -63,7 +63,7 @@ test('native slot uses current workspace, propagates theme and registers no over
   });
   assert.equal(slots.filter(slot => slot.options.name === 'shell.overlay').length, 0);
   const native = slots.find(slot => slot.options.name === 'conversation.view');
-  assert.equal(native.options.id, 'vis4agent');
+  assert.equal(native.options.id, 'langcontour');
   assert.equal(native.options.label(), '架构');
   const entry = slots.find(slot => slot.options.name === 'conversation.header.leading');
   const main = slots.find(slot => slot.options.name === 'main');

@@ -1,12 +1,14 @@
-# vis4agent
+# LangContour（图廓）
 
 <p align="center">
   <strong>简体中文</strong> | <a href="README.en.md">English</a>
 </p>
 
+**看清架构，从容改图。**
+
 面向 **DeepSeek Harness 桌面端**的 LangGraph 可视化开发插件。直接读取工作区里的 Python 源码，在会话的“架构”视图中查看 State、节点、条件分支与图间调用，并通过草稿、差异审阅和确认应用来修改项目。
 
-当前为开发预览版，Harness 插件版本 **0.6.7**。本项目是社区插件。
+当前为开发预览版，Harness 插件版本 **0.7.0**。本项目是社区插件。
 
 ## 可以做什么
 
@@ -26,8 +28,8 @@
 本仓库是前后端与 Python worker 共存的 monorepo，插件入口在 `plugins/harness`。请先克隆、构建，再以本地链接安装该子目录；不要把仓库根目录当成独立 bundle 直接安装。
 
 ```powershell
-git clone https://github.com/Cantarella-Fisalia/vis4agent.git
-cd vis4agent
+git clone https://github.com/Cantarella-Fisalia/langcontour.git
+cd langcontour
 npm.cmd ci
 npm.cmd run build
 $pluginPath = (Resolve-Path ./plugins/harness).Path.Replace('\', '/')
@@ -36,7 +38,13 @@ dsh plugin --profile desktop add "link:$pluginPath"
 
 如 `dsh` 不在 PATH，请使用桌面应用自带的 DSH CLI 执行相同的插件命令。完全退出并重开桌面，进入项目工作区，在“对话／轨迹”旁打开“架构”。插件共用当前工作区目录，主题跟随 Harness。
 
-如机器上存在多个 Python 版本，可在启动 Harness 的环境中设置 `VIS4AGENT_PYTHON` 指向 Python 3.11+。详细操作和限制见 [使用指南](USER_GUIDE.md)。
+如机器上存在多个 Python 版本，可在启动 Harness 的环境中设置 `LANGCONTOUR_PYTHON` 指向 Python 3.11+。详细操作和限制见 [使用指南](USER_GUIDE.md)。
+
+## 从旧版升级
+
+LangContour（图廓）是原 vis4agent 的新名称。已安装旧包时，请先在 Harness 插件管理中卸载旧条目，再按上面的方式链接新版 plugins/harness 并完全重启桌面；不要同时加载新旧两份插件。
+
+现有项目的 .vislang 目录继续保存布局、AI 缓存、行为记录和源码事务，不需删除或重新建项目。旧浏览器偏好、结构草稿和未确认任务回执有兼容读取；未确认请求不会因改名自动重发。新环境变量使用 LANGCONTOUR_PYTHON，已有 VIS4AGENT_PYTHON 仍可作为后备。当前开发机工作目录保持原路径可用，新克隆目录为 langcontour。
 
 ## 开发和检查
 
@@ -71,7 +79,7 @@ MCP、RAG、Tools、Skills 当前预留接口和目录，尚未全部实现。�
 - [使用与首轮测试指南](USER_GUIDE.md)
 - [开发交接](docs/DEVELOPMENT_HANDOFF.md)
 - [公开发布与安装边界](docs/GITHUB_PUBLICATION.md)
-- [提交问题](https://github.com/Cantarella-Fisalia/vis4agent/issues)
+- [提交问题](https://github.com/Cantarella-Fisalia/langcontour/issues)
 
 GitHub 仓库使用官方要求的 `dsh-plugin` topic，并附 `deepseek-harness`、`langgraph` 等主题。标签用于发现，不代表官方认证或桌面兼容性保证。原始运行日志、截图、会话缓存与本机配置不随源码上传；历史交接文档中的相关附件可能只在开发机保留。
 

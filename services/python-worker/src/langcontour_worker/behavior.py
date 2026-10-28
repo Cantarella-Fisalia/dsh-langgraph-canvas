@@ -21,7 +21,9 @@ from .transactions import Transactions, TransactionError, canonical, check, now
 
 ACTIVE = {'submitting', 'queued', 'running', 'cancelling', 'needs_attention'}
 TERMINAL = {'cancelled', 'review_ready', 'failed', 'conflicted'}
-MARKER = '.vis4agent-owner.json'
+from .legacy import BEHAVIOR_PREFIXES, behavior_marker
+
+MARKER = '.langcontour-owner.json'
 
 
 def decoded(raw):
@@ -135,9 +137,9 @@ class BehaviorTasks:
         path = Path(task['_workspace'])
         expected_parent = Path(tempfile.gettempdir()).resolve()
         check(not path.is_symlink() and not getattr(path, 'is_junction', lambda: False)() and path.resolve().parent == expected_parent
-              and path.name.startswith('vis4agent-behavior-'), 'UNSAFE_WORKSPACE', '临时工作区路径不安全。')
+              and path.name.startswith(BEHAVIOR_PREFIXES), 'UNSAFE_WORKSPACE', '临时工作区路径不安全。')
         check(path.is_dir(), 'WORKSPACE_MISSING', '临时工作区已丢失，不能导入结果。')
-        marker = path / MARKER
+        marker = path / behavior_marker(path.name)
         check(not marker.is_symlink() and marker.read_text(encoding='utf-8') == task['_owner'], 'UNSAFE_WORKSPACE', '临时工作区所有权标记不匹配。')
         return path.resolve()
 
@@ -152,7 +154,7 @@ class BehaviorTasks:
             for name in names:
                 path = Path(directory, name)
                 file = path.relative_to(root).as_posix()
-                if file == MARKER:
+                if file == behavior_marker(root.name):
                     continue
                 check(file in task['_inputFiles'] and path.stat().st_size <= MAX_BYTES, 'INVALID_BEHAVIOR_RESULT', '任务创建了未授权文件或超出大小：' + file, 422)
                 raw = path.read_bytes(); total += len(raw)
@@ -167,7 +169,7 @@ class BehaviorTasks:
         try:
             self.snapshot(task)
             path = self.workspace(task)
-            check(path.parent == Path(tempfile.gettempdir()).resolve() and path.name.startswith('vis4agent-behavior-'),
+            check(path.parent == Path(tempfile.gettempdir()).resolve() and path.name.startswith(BEHAVIOR_PREFIXES),
                   'UNSAFE_WORKSPACE', '清理范围无效。')
             shutil.rmtree(path)
             task['_workspaceCleaned'] = True
@@ -209,7 +211,7 @@ class BehaviorTasks:
             for file, raw in before_files.items():
                 content, _ = decoded(raw); before.modules[file] = (ast.parse(content), content)
             old_graph = next(g for g in before.analyze_file(parent['graphId'].split('::')[0]) if g['id'] == parent['graphId'])
-            directory = Path(tempfile.mkdtemp(prefix='vis4agent-behavior-')).resolve()
+            directory = Path(tempfile.mkdtemp(prefix='langcontour-behavior-')).resolve()
             check(directory.parent == Path(tempfile.gettempdir()).resolve(), 'UNSAFE_WORKSPACE', '临时目录不在指定位置。')
             owner = canonical({'taskId': task_id, 'token': secrets.token_hex(24)})
             (directory / MARKER).write_text(owner, encoding='utf-8')

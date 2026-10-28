@@ -1,3 +1,4 @@
+import { compatibleStorage } from './legacy-storage.ts';
 import type { ApiClient } from '../../../packages/api-client/src/index.ts';
 import type { AnalysisTask } from '../../../packages/contracts/src/analysis.ts';
 
@@ -17,8 +18,9 @@ export function analysisSessionStorage(): StorageLike | undefined {
 
 /** View lifetime owns observation only. Tasks and their identity belong to the backend. */
 export function createAnalysisMonitor(api: Client, projectId: string, sessionId: string | null, storage?: StorageLike) {
-  const key = 'vis4agent:analysis-request:' + JSON.stringify([api.base, projectId, sessionId]);
-  const autoKey = 'vis4agent:analysis-auto:' + JSON.stringify([api.base, projectId, sessionId]);
+  storage = compatibleStorage(storage);
+  const key = 'langcontour:analysis-request:' + JSON.stringify([api.base, projectId, sessionId]);
+  const autoKey = 'langcontour:analysis-auto:' + JSON.stringify([api.base, projectId, sessionId]);
   function attempted(revision: string) {
     let saved: string[] = [];
     try {

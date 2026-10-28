@@ -1,7 +1,7 @@
-# LangGraph 可视化开发插件：项目主设计文档
+# LangContour（图廓）：项目主设计文档
 
-> 状态：聚焦 LangGraph 结构，插件 v0.6.7；已实现子图按钮导航和返回恢复。本批按用户授权，在 Harness 当前会话打开架构页且缺少本版本 AI 结果时自动补充一次只读解析；缓存／后台任务复用，失败或取消后手动重试，源码修改仍单独确认。见 AUTO-ANALYSIS-001；真实账号解释质量与 Electron 桌面仍待反馈。版本：0.32。更新日期：2026-10-28。
-> 暂定名称：vis4agent。
+> 状态：聚焦 LangGraph 结构，插件 v0.7.0；已实现子图按钮导航和返回恢复。本批按用户授权，在 Harness 当前会话打开架构页且缺少本版本 AI 结果时自动补充一次只读解析；缓存／后台任务复用，失败或取消后手动重试，源码修改仍单独确认。见 AUTO-ANALYSIS-001；真实账号解释质量与 Electron 桌面仍待反馈。版本：0.33。更新日期：2026-10-28。
+> 暂定名称：langcontour。
 > 本文件是后续讨论、设计改进、任务拆分、实现与验收的主要依据。
 
 ## 1. 文档维护规则
@@ -207,7 +207,7 @@ Harness 适配层与核心图模型、解析器解耦，避免依赖变动扩散
 下列为目标目录结构，不代表目录或能力已经实现。
 
 ```text
-vis4agent/
+langcontour/
 ├─ PROJECT_PLAN.md                 # 本主设计文档
 ├─ apps/
 │  ├─ frontend/                    # 独立前端应用
@@ -241,7 +241,7 @@ vis4agent/
 │     └─ client/                   # 界面入口、资源挂载
 ├─ services/
 │  └─ python-worker/
-│     └─ src/vislang_worker/
+│     └─ src/langcontour_worker/
 │        ├─ protocol/             # 与后端通信
 │        ├─ analysis/             # LangGraph 静态解析与引用定位
 │        ├─ transforms/           # 精确代码变换（规划；当前 source_preview.py）
@@ -358,7 +358,7 @@ MCP 与 Tools 可以协作，但不能把 MCP 的全部能力都等同为工具�
 
 ```yaml
 - insert:
-    - id: vis4agent-dev
+    - id: langcontour-dev
       name: 'E:/Heng/vis4agent/plugins/harness/lib/index.js'
 ```
 
@@ -591,15 +591,15 @@ P1 以 Python 标准库 AST 只读识别，P2 当前以 AST 定位加精确源�
 | 桌面版 DeepSeek Harness | 0.2.0-rc.2（Electron 43.3.0；应用内 `@deepseek-ai/*` 包为 0.2.1-rc.2） |
 | 运行时 Node | 24.21.0（`~/.dsh/dsh-runtimes/dsh-primary-runtime`） |
 | 插件包 | `plugins/harness`，声明 `dsh.bundle` 与 `dsh.client`（platform: web） |
-| 验证用 profile | `vis4agent-test`，`DSH_HOME=<repo>/.dsh-test`，由官方 `web` 模板创建，未触碰桌面 `desktop` profile |
-| 启动方式 | `dsh plugin --profile vis4agent-test add <repo>/plugins/harness`，再 `dsh --profile vis4agent-test --no-open --port 61999` |
+| 验证用 profile | `langcontour-test`，`DSH_HOME=<repo>/.dsh-test`，由官方 `web` 模板创建，未触碰桌面 `desktop` profile |
+| 启动方式 | `dsh plugin --profile langcontour-test add <repo>/plugins/harness`，再 `dsh --profile langcontour-test --no-open --port 61999` |
 
 结果（全部通过）：
 
-1. 宿主半侧被加载：启动日志输出 `[vis4agent] host plugin loaded (v0.1.0)`。
-2. 配置层生效：`dsh --profile vis4agent-test --dump-config` 出现 `# == vis4agent` 层；profile 的 `dsh.profile.bundles` 末尾追加 `vis4agent`。
-3. HTTP 接口可用：`GET /vis4agent/api/health` 返回 200 JSON；`GET /vis4agent/api/graph` 返回示例图；未知路径返回 404。
-4. 浏览器半侧进入启动图：首页预载 URL 中出现 `vis4agent/client.js`，按 `&rev=` 组合资源请求返回 200 且包含客户端代码。
+1. 宿主半侧被加载：启动日志输出 `[langcontour] host plugin loaded (v0.1.0)`。
+2. 配置层生效：`dsh --profile langcontour-test --dump-config` 出现 `# == langcontour` 层；profile 的 `dsh.profile.bundles` 末尾追加 `langcontour`。
+3. HTTP 接口可用：`GET /langcontour/api/health` 返回 200 JSON；`GET /langcontour/api/graph` 返回示例图；未知路径返回 404。
+4. 浏览器半侧进入启动图：首页预载 URL 中出现 `langcontour/client.js`，按 `&rev=` 组合资源请求返回 200 且包含客户端代码。
 5. 界面渲染可用：设置页出现「LangGraph 可视化」分节，面板成功拉取宿主接口并显示「宿主接口正常 · 插件 v0.1.0」。
 
 已知限制：面板目前只是设置页里的状态页，图数据为内置示例；尚无解析器、画布、Python 工作进程与编辑事务；未验证装入桌面 `desktop` profile（需重启应用）。
@@ -635,14 +635,14 @@ P0 剩余待回答：
 
 桌面 `desktop` profile 由 Electron 应用独占，`dsh --profile desktop ...` 及 `dsh plugin --profile desktop` 会被 CLI 拒绝（`profile "desktop" is managed exclusively by the Electron application`）。因此改为手工等价于 `dsh plugin add` 的两步：
 
-1. `profiles/desktop/package.json`：`dependencies` 增加 `"vis4agent": "link:E:/Heng/vis4agent/plugins/harness"`，`dsh.profile.bundles` 末尾追加 `vis4agent`；
-2. `profiles/desktop/node_modules/vis4agent` 建立指向源码目录的目录联结（Junction），使包解析命中仓库里的源码。
+1. `profiles/desktop/package.json`：`dependencies` 增加 `"langcontour": "link:E:/Heng/vis4agent/plugins/harness"`，`dsh.profile.bundles` 末尾追加 `langcontour`；
+2. `profiles/desktop/node_modules/langcontour` 建立指向源码目录的目录联结（Junction），使包解析命中仓库里的源码。
 
 选择链接而非拷贝的原因：源码目录是唯一事实来源，改完即生效（浏览器半侧热更、宿主半侧重启应用），不存在"改了副本"的问题。代价是移动或删除该目录会导致插件加载失败。
 
 验证状态：`node` 解析已确认命中 `E:/Heng/vis4agent/plugins/harness`（entry 与 `./client` 均正确）；**尚未重启应用**，桌面版内的加载与界面渲染待重启后确认。
 
-回滚：恢复 `profiles/desktop/package.json.bak-<时间戳>`，并删除 `node_modules/vis4agent` 联结。
+回滚：恢复 `profiles/desktop/package.json.bak-<时间戳>`，并删除 `node_modules/langcontour` 联结。
 
 ### 14.4 P1 主功能交付（2026-10-23）
 
@@ -830,3 +830,5 @@ D022（2026-10-26）：以画布为主；State 左上角按需展开，删除架
 - 0.31（2026-10-28）：AUTO-ANALYSIS-001，当前会话自动补充缺失版本解析、缓存与任务复用、按版本去重及失败／取消后手动重试。
 
 - 0.32（2026-10-28）：GITHUB-PUBLIC-001，首次公开 GitHub 发布、dsh-plugin topic、仓库元数据与可复现安装说明；运行附件保留本地。
+
+- 0.33（2026-10-28）：BRAND-RENAME-001，LangContour（图廓）统一命名、宿主 v0.7.0、Python worker 模块改名及旧数据兼容；GitHub 仓库更名为 langcontour。

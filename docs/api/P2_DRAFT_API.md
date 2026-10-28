@@ -8,7 +8,7 @@ P1 的 structuralEdit:false 继续表示尚不支持源码结构写回，与前�
 
 ## 本地草稿
 
-画布节点、连线、条件分支、整组等待汇合和 State 字段的修改保存在浏览器本地，键为 vis4agent:structure-draft:{projectId}:{graphId}。包含原始结构、目标结构、源码版本、请求编号和可选回执。
+画布节点、连线、条件分支、整组等待汇合和 State 字段的修改保存在浏览器本地，键为 langcontour:structure-draft:{projectId}:{graphId}。包含原始结构、目标结构、源码版本、请求编号和可选回执。
 
 只有保存表单才更改草稿；拖拽端口先打开连线表单，可以取消。切图后分别恢复对应草稿。源码版本变化后旧草稿保留，画布显示最新源码；旧草稿不可编辑或提交，须核对后放弃并重新编辑。本阶段不自动合并旧草稿。
 
@@ -84,7 +84,7 @@ ApplicationOptions 新增可选 editRequestAdapter：
 ```typescript
 const application = createApplication({
   repoRoot,
-  apiPrefix: '/vis4agent/api/v1',
+  apiPrefix: '/langcontour/api/v1',
   editRequestAdapter: {
     async submit(intent) {
       // receiver 是乙方需要实现的接收器，并非已确认存在的 Harness API。

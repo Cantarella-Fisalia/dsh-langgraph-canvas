@@ -1,6 +1,6 @@
 {
-  "name": "vis4agent",
-  "version": "0.6.7",
+  "name": "langcontour",
+  "version": "0.7.0",
   "private": true,
   "description": "LangGraph visual development plugin for DeepSeek Harness: source graphs, current-session AI explanations, reviewed editing and undo.",
   "type": "module",
@@ -38,11 +38,11 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/Cantarella-Fisalia/vis4agent.git",
+    "url": "https://github.com/Cantarella-Fisalia/langcontour.git",
     "directory": "plugins/harness"
   },
-  "homepage": "https://github.com/Cantarella-Fisalia/vis4agent#readme",
+  "homepage": "https://github.com/Cantarella-Fisalia/langcontour#readme",
   "bugs": {
-    "url": "https://github.com/Cantarella-Fisalia/vis4agent/issues"
+    "url": "https://github.com/Cantarella-Fisalia/langcontour/issues"
   }
 }

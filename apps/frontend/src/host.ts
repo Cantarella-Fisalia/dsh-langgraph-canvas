@@ -2,14 +2,14 @@ import { useEffect, useState } from 'react';
 
 export interface HostContext {
   schemaVersion: 1;
-  type: 'vis4agent:host-context';
+  type: 'langcontour:host-context';
   workspaceRoot: string | null;
   sessionId?: string | null;
   theme: { colorScheme: 'light' | 'dark'; tokens: Record<string, string>; fontFamily?: string };
 }
 export function isHostContext(value: unknown): value is HostContext {
   const context = value as HostContext;
-  return !!context && context.schemaVersion === 1 && context.type === 'vis4agent:host-context' &&
+  return !!context && context.schemaVersion === 1 && context.type === 'langcontour:host-context' &&
     (context.workspaceRoot === null || typeof context.workspaceRoot === 'string') &&
     (context.sessionId === undefined || context.sessionId === null || (typeof context.sessionId === 'string' && /^[\w-]{1,128}$/.test(context.sessionId))) &&
     !!context.theme && ['light', 'dark'].includes(context.theme.colorScheme) &&
@@ -44,7 +44,7 @@ export function useHostContext(embedded: boolean) {
       setContext(context);
     }
     window.addEventListener('message', receive);
-    window.parent.postMessage({ type: 'vis4agent:ready', schemaVersion: 1 }, targetOrigin());
+    window.parent.postMessage({ type: 'langcontour:ready', schemaVersion: 1 }, targetOrigin());
     return () => { window.removeEventListener('message', receive); previousTokens.forEach(key => document.documentElement.style.removeProperty(key)); };
   }, [embedded]);
   return context;

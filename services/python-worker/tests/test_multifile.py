@@ -4,8 +4,8 @@ import unittest
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'src'))
-from vislang_worker.analysis import Analyzer
-from vislang_worker.source_preview import generate
+from langcontour_worker.analysis import Analyzer
+from langcontour_worker.source_preview import generate
 
 
 class MultiFileTests(unittest.TestCase):

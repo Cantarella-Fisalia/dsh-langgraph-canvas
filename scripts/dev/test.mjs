@@ -4,6 +4,7 @@ import { probePython, resolvePythonCommand } from '../runtime/python.mjs';
 
 const root = fileURLToPath(new URL('../../', import.meta.url));
 const nodeTests = [
+  'apps/frontend/src/branding.test.ts',
   'apps/frontend/src/workspace-cache.test.ts',
   'apps/frontend/src/analysis-monitor.test.ts',
   'plugins/harness/tests/session-channel.test.mjs',
@@ -19,7 +20,7 @@ try {
   const python = await probePython(resolvePythonCommand(), { cwd: root });
   console.log(`Python ${python.version}: ${python.executable}`);
   // Both Node-created workers and the unittest process receive exactly the validated executable.
-  const env = { ...process.env, VIS4AGENT_PYTHON: python.executable, PYTHONIOENCODING: 'utf-8', PYTHONDONTWRITEBYTECODE: '1' };
+  const env = { ...process.env, LANGCONTOUR_PYTHON: python.executable, PYTHONIOENCODING: 'utf-8', PYTHONDONTWRITEBYTECODE: '1' };
   const run = (command, args) => new Promise(resolve => {
     const child = spawn(command, args, { cwd: root, env, stdio: 'inherit', windowsHide: true });
     child.on('error', error => { console.error(error.message); resolve(1); });

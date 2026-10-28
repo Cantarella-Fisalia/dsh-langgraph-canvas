@@ -12,7 +12,7 @@ const repoRoot = fileURLToPath(new URL('../../../', import.meta.url));
 const SOURCE = 'from typing import TypedDict\nfrom langgraph.graph import StateGraph, START, END\nclass State(TypedDict):\n    question: str\ndef work(state):\n    return {}\ng = StateGraph(State)\ng.add_node("work", work)\ng.add_edge(START, "work")\ng.add_edge("work", END)\napp = g.compile()\n';
 
 test('confirmed source preview works without Harness; deduplicates, preserves source and rejects stale or invalid drafts', async () => {
-  const prefix = join(tmpdir(), 'vis4agent-preview-api-');
+  const prefix = join(tmpdir(), 'langcontour-preview-api-');
   const directory = await mkdtemp(prefix);
   await writeFile(join(directory, 'graph.py'), SOURCE);
   let harnessCalls = 0;

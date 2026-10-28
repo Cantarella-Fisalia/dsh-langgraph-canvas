@@ -1,10 +1,14 @@
-# vis4agent 开发交接
+# langcontour 开发交接
 
 更新：2026-10-28。需求依据：[PROJECT_PLAN.md](../PROJECT_PLAN.md)。职责以 [双方协作协议 v1.0](COOPERATION_AGREEMENT.md) 为准。
 
 ## 当前交付
 
-GITHUB-PUBLIC-001：已公开发布 https://github.com/Cantarella-Fisalia/vis4agent，默认 main；设置官方 dsh-plugin 等主题，补齐仓库元数据、MIT LICENSE、公开安装说明和隐私忽略规则。类型检查、162 项回归、生产构建与 11 项预检通过；本机缓存和原始运行附件未上传。无宿主代码、协议或 profile 变动。见 [发布记录](handoffs/main/GITHUB-PUBLIC-001.md)。
+BRAND-RENAME-001：品牌统一为 LangContour（图廓），宿主包 v0.7.0，主计划 v0.33。命名覆盖清单、前后端、桥接、路由、提示词、worker 模块、测试和中英文文档；保留旧偏好／草稿／回执／行为记录与解释器变量的兼容读取，.vislang 数据位置不变。实际项目类型检查、170 项回归、生产构建及 11 项插件预检通过，桌面需按升级步骤重新链接并复测。参见 [改名与升级](handoffs/main/BRAND-RENAME-001.md)。
+
+以下为历史交付。
+
+GITHUB-PUBLIC-001：已公开发布 https://github.com/Cantarella-Fisalia/langcontour，默认 main；设置官方 dsh-plugin 等主题，补齐仓库元数据、MIT LICENSE、公开安装说明和隐私忽略规则。类型检查、162 项回归、生产构建与 11 项预检通过；本机缓存和原始运行附件未上传。无宿主代码、协议或 profile 变动。见 [发布记录](handoffs/main/GITHUB-PUBLIC-001.md)。
 
 以下为历史交付。
 
@@ -70,7 +74,7 @@ AI 为独立只读任务：Harness 全局默认模型、无工具、明确点击
 
 以下为历史交付。
 
-PYTHON-RUNTIME-001：已修复乙方独立复测发现的解释器选择差异。统一模块 scripts/runtime/python.mjs 供宿主、PythonWorker 和 npm test 使用；顺序 pythonCommand → VIS4AGENT_PYTHON → 存在的 D:/Anaconda/python.exe → PATH python。Worker 启动前以 -I -S 探测版本，不加载项目；不足 3.11 返回 503 / PYTHON_VERSION_UNSUPPORTED，附路径、实际版本和修复指引。显式无效配置不静默回退。
+PYTHON-RUNTIME-001：已修复乙方独立复测发现的解释器选择差异。统一模块 scripts/runtime/python.mjs 供宿主、PythonWorker 和 npm test 使用；顺序 pythonCommand → LANGCONTOUR_PYTHON → 存在的 D:/Anaconda/python.exe → PATH python。Worker 启动前以 -I -S 探测版本，不加载项目；不足 3.11 返回 503 / PYTHON_VERSION_UNSUPPORTED，附路径、实际版本和修复指引。显式无效配置不静默回退。
 
 新 test runner 同时给 Node 创建的 worker 和 Python unittest 传入已验证的同一可执行文件。adapter 与行为任务检查在读取 graphs 前验证 /projects HTTP 状态，避免根因被 TypeError 遮盖。67 项检查、类型与构建通过；PATH 强制为 3.7.9 时 npm test 与单独 adapter 检查仍通过，显式指定 3.7.9 时按预期快速失败；实际旧版本 API 检查返回明确 503。
 
@@ -152,6 +156,6 @@ P2-DRAFT-001 补验重点：未确认时接收器调用次数保持 0；确认�
 
 ## 历史接入基线
 
-P0 0.1.0 已有宿主路由 /vis4agent/api/health 和内置示例 /graph，以及设置页面板。此前隔离 profile 有加载记录和截图；当前新工作台需另行接入，不能用 P0 示例作为 P1 验收证据。
+P0 0.1.0 已有宿主路由 /langcontour/api/health 和内置示例 /graph，以及设置页面板。此前隔离 profile 有加载记录和截图；当前新工作台需另行接入，不能用 P0 示例作为 P1 验收证据。
 
 桌面启动 BOM 故障已有限修复，记录见 [BUG-DESKTOP-JSON-BOM-001](handoffs/main/BUG-DESKTOP-JSON-BOM-001.md)。该修复不代替 P1 桌面集成验证。

@@ -78,7 +78,7 @@ export function createSessionChannel(ctx) {
         return context.agent === agent && lease.active ? { ...assembled, tools: [] } : assembled
       }, { prepend: true }))
       // A monotonic execution guard also blocks tools remembered from earlier conversation turns.
-      stops.push(service(agent.ctx, 'tools').guard(exec => exec.agent === agent && lease.active ? 'vis4agent 会话任务仅返回 JSON，不执行工具或修改文件。' : undefined))
+      stops.push(service(agent.ctx, 'tools').guard(exec => exec.agent === agent && lease.active ? 'langcontour 会话任务仅返回 JSON，不执行工具或修改文件。' : undefined))
       stops.push(agent.ctx.on('agent/pre-step', async (payload, next) => {
         const decision = await next()
         if (payload.agent !== agent || payload.turn !== lease.turn || decision.kind === 'reject') return decision
