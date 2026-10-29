@@ -1,8 +1,12 @@
 # dsh-langgraph-canvas 开发交接
 
-更新：2026-10-28。需求依据：[PROJECT_PLAN.md](../PROJECT_PLAN.md)。职责以 [双方协作协议 v1.0](COOPERATION_AGREEMENT.md) 为准。
+更新：2026-10-29。需求依据：[PROJECT_PLAN.md](../PROJECT_PLAN.md)。职责以 [双方协作协议 v1.0](COOPERATION_AGREEMENT.md) 为准。
 
 ## 当前交付
+
+DISTRIBUTION-001：宿主 v0.9.0、主计划 v0.35，制作独立发布包与官方 Discover 可读取的社区索引。174 项回归、构建与仓库外安装后 12 项预检通过；发布时将后端／协议编译为 JavaScript，安装无需克隆或构建。公开版本与索引验证进行中，见 [分发记录](handoffs/main/DISTRIBUTION-001.md)。
+
+以下为历史交付。
 
 DSH-CANVAS-RENAME-001：按用户选定的 dsh-langgraph-canvas 统一命名，宿主 v0.8.0、主计划 v0.34；两代旧数据兼容，新增中英文非官方声明、官方许可／品牌核查及依赖许可材料。用户本机 profile 与乙方未提交接入记录保持不动。实际目录类型检查、174 项测试、构建和 12 项预检通过；26 份依赖许可随构建交付，版权／品牌核查不构成零风险保证。见 [本批交付](handoffs/main/DSH-CANVAS-RENAME-001.md)。
 

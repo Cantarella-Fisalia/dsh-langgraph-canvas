@@ -24,7 +24,7 @@ export const name = 'dsh-langgraph-canvas'
 // Conversation services are optional: static graph viewing needs only webServer.
 export const inject = ['webServer']
 
-const VERSION = '0.8.0'
+const VERSION = '0.9.0'
 
 /**
  * 仓库根：插件可能被 pnpm link / 目录联结加载，import.meta.url 会停在
@@ -35,7 +35,7 @@ const VERSION = '0.8.0'
  */
 function resolveRepoRoot() {
   const fromEnv = environmentValue('REPO_ROOT')
-  if (fromEnv && existsSync(join(fromEnv, 'apps', 'backend', 'src', 'application.ts'))) return resolve(fromEnv)
+  if (fromEnv && ['application.js', 'application.ts'].some(entry => existsSync(join(fromEnv, 'apps', 'backend', 'src', entry)))) return resolve(fromEnv)
 
   const self = fileURLToPath(import.meta.url)
   let real
@@ -49,7 +49,9 @@ function resolveRepoRoot() {
 
 const REPO_ROOT = resolveRepoRoot()
 const FRONTEND_DIST = join(REPO_ROOT, 'apps', 'frontend', 'dist')
-const BACKEND_ENTRY = join(REPO_ROOT, 'apps', 'backend', 'src', 'application.ts')
+// Installed releases ship JS: Node refuses type stripping inside node_modules.
+const BACKEND_ENTRY = join(REPO_ROOT, 'apps', 'backend', 'src',
+  existsSync(join(REPO_ROOT, 'apps', 'backend', 'src', 'application.js')) ? 'application.js' : 'application.ts')
 
 /** 后端 API 前缀，必须与前端 apiBase 一致。 */
 const API_PREFIX = '/dsh-langgraph-canvas/api/v1'

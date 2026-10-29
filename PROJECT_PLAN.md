@@ -1,6 +1,6 @@
 # dsh-langgraph-canvas：项目主设计文档
 
-> 状态：聚焦 LangGraph 结构，插件 v0.8.0；已实现子图按钮导航和返回恢复。本批按用户授权，在 Harness 当前会话打开架构页且缺少本版本 AI 结果时自动补充一次只读解析；缓存／后台任务复用，失败或取消后手动重试，源码修改仍单独确认。见 AUTO-ANALYSIS-001；真实账号解释质量与 Electron 桌面仍待反馈。版本：0.34。更新日期：2026-10-28。
+> 状态：聚焦 LangGraph 结构，插件 v0.9.0；已实现子图按钮导航和返回恢复。本批按用户授权，在 Harness 当前会话打开架构页且缺少本版本 AI 结果时自动补充一次只读解析；缓存／后台任务复用，失败或取消后手动重试，源码修改仍单独确认。见 AUTO-ANALYSIS-001；真实账号解释质量与 Electron 桌面仍待反馈。版本：0.35。更新日期：2026-10-29。
 > 暂定名称：dsh-langgraph-canvas。
 > 本文件是后续讨论、设计改进、任务拆分、实现与验收的主要依据。
 
@@ -834,3 +834,11 @@ D022（2026-10-26）：以画布为主；State 左上角按需展开，删除架
 - 0.33（2026-10-28）：BRAND-RENAME-001，dsh-langgraph-canvas统一命名、宿主 v0.7.0、Python worker 模块改名及旧数据兼容；GitHub 仓库更名为 dsh-langgraph-canvas。
 
 - 0.34（2026-10-28）：DSH-CANVAS-RENAME-001，dsh-langgraph-canvas 全面改名、两代旧名兼容、中英文非官方声明、依赖许可及官方版权／品牌规则核查。
+
+## 16. DISTRIBUTION-001：独立安装与公开索引（2026-10-29）
+
+用户已授权制作与分发。源仓库保持前后端分离；新增 release:package 生成完整运行包，release:verify 在仓库外安装并检验源码事务、Python 与静态资源。分发包将后端／协议 TypeScript 预编译为 ESM JavaScript，保持相对目录结构，根清单指向 plugins/harness，包含前端 dist、预编译 JavaScript 后端、协议、运行脚本、worker 和许可；无安装构建钩子。源插件子目录仍是私有开发入口，不能单独作为完整包发布。
+
+公开分发使用同一仓库 codex/distribution-v0.9.0 分支和 v0.9.0 标签保存生成包；主分支 market/index.json 采用官方 format 1，版本 Git 源固定 40 位提交，不使用移动分支。GitHub Release 提供 tgz 与 SHA256SUMS。官方 Discover 须一次性添加该 HTTPS 索引后搜索安装；默认目录收录由运营方决定，不宣称官方认证。发布包要求 Node 24+、Python 3.11+；Git 源安装另需 Git。
+
+状态：开发中，公开 URL、安装证据及桌面验收边界见 docs/handoffs/main/DISTRIBUTION-001.md。不改生产 profile，不使用真实模型账号。

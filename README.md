@@ -11,7 +11,7 @@
 
 面向 **DeepSeek Harness 桌面端**的 LangGraph 可视化开发插件。直接读取工作区里的 Python 源码，在会话的“架构”视图中查看 State、节点、条件分支与图间调用，并通过草稿、差异审阅和确认应用来修改项目。
 
-当前为开发预览版，Harness 插件版本 **0.8.0**。本项目是社区插件。
+当前为开发预览版，Harness 插件版本 **0.9.0**。本项目是社区插件。
 
 ## 可以做什么
 
@@ -26,9 +26,23 @@
 
 ## 安装到 DeepSeek Harness
 
-需要 **Node.js 24+、Python 3.11+** 和可运行的 DeepSeek Harness 桌面端。源码解析无需安装 LangGraph。
+需要 **Node.js 24+、Python 3.11+** 和 DeepSeek Harness 桌面端。通过 Git 源安装还需 Git。发布包已包含构建好的前端、后端、worker 与许可，不需自行克隆或构建；源码解析无需安装 LangGraph。
 
-本仓库是前后端与 Python worker 共存的 monorepo，插件入口在 `plugins/harness`。请先克隆、构建，再以本地链接安装该子目录；不要把仓库根目录当成独立 bundle 直接安装。
+1. 打开 **插件 → 实验性插件 → 更多**，启用 **自定义插件市场（Custom plugin markets）**，进入 **发现（Discover）**。
+2. 点击 **添加索引源（Add index source）**，粘贴：
+
+   `https://raw.githubusercontent.com/Cantarella-Fisalia/dsh-langgraph-canvas/main/market/index.json`
+
+3. 搜索 **dsh-langgraph-canvas** 或 **LangGraph**，核对版本与来源，点击 **安装**。
+4. 进入项目工作区，在“对话／轨迹”旁打开“架构”；若宿主提示重启，请完全退出并重开。
+
+这是由本项目独立维护、官方桌面支持读取的社区索引，每个 profile 只需添加一次；不代表进入官方默认目录或获得认证。详见 [分发与安装](docs/DISTRIBUTION.md)。
+
+也可从 [Releases](https://github.com/Cantarella-Fisalia/dsh-langgraph-canvas/releases/latest) 下载预构建 `.tgz`，在 **插件 → 添加插件** 中输入其本地绝对路径安装。多 Python 环境可在启动 Harness 前设置 `DSH_LANGGRAPH_CANVAS_PYTHON` 指向 Python 3.11+。
+
+### 从源码开发安装
+
+源码仓库根目录仍是私有工作区；生成的发布包根目录才是可安装 bundle。本地开发时使用：
 
 ```powershell
 git clone https://github.com/Cantarella-Fisalia/dsh-langgraph-canvas.git
@@ -38,10 +52,6 @@ npm.cmd run build
 $pluginPath = (Resolve-Path ./plugins/harness).Path.Replace('\', '/')
 dsh plugin --profile desktop add "link:$pluginPath"
 ```
-
-如 `dsh` 不在 PATH，请使用桌面应用自带的 DSH CLI 执行相同的插件命令。完全退出并重开桌面，进入项目工作区，在“对话／轨迹”旁打开“架构”。插件共用当前工作区目录，主题跟随 Harness。
-
-如机器上存在多个 Python 版本，可在启动 Harness 的环境中设置 `DSH_LANGGRAPH_CANVAS_PYTHON` 指向 Python 3.11+。详细操作和限制见 [使用指南](USER_GUIDE.md)。
 
 ## 从旧版升级
 

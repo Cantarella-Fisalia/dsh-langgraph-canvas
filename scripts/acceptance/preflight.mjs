@@ -2,6 +2,7 @@
 import assert from 'node:assert/strict';
 import { createServer } from 'node:http';
 import { createHash } from 'node:crypto';
+import { existsSync } from 'node:fs';
 import { readFile, writeFile, mkdir, mkdtemp, readdir, lstat, realpath, rm } from 'node:fs/promises';
 import { resolve, join, dirname, relative, isAbsolute, basename } from 'node:path';
 import { tmpdir } from 'node:os';
@@ -81,7 +82,8 @@ try {
   report.sourceHashes['scripts/runtime/python.mjs'] = hash(await readFile(join(repo, 'scripts/runtime/python.mjs')));
   report.sourceHashes['apps/frontend/dist/index.html'] = hash(await readFile(join(repo, 'apps/frontend/dist/index.html')));
   const { apply } = await import(pathToFileURL(pluginPath).href);
-  const { editableGraph } = await import(pathToFileURL(join(repo, 'packages/contracts/src/editing.ts')).href);
+  const contractsEntry = join(repo, 'packages/contracts/src', existsSync(join(repo, 'packages/contracts/src/editing.js')) ? 'editing.js' : 'editing.ts');
+  const { editableGraph } = await import(pathToFileURL(contractsEntry).href);
   await check('plugin-registration', () => {
     apply({
       webServer: { register(route) {

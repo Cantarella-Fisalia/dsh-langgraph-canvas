@@ -9,7 +9,7 @@
 
 A LangGraph visual development plugin for **DeepSeek Harness Desktop**. Read Python source files from your workspace, inspect State, nodes, conditional branches, and graph calls in the conversation's architecture view, and update your project through drafts, diff review, and confirmed changes.
 
-Currently in developer preview. Harness plugin version: **0.8.0**. This is a community plugin.
+Currently in developer preview. Harness plugin version: **0.9.0**. This is a community plugin.
 
 ## Features
 
@@ -24,9 +24,23 @@ Static analysis does not execute user Python modules. AI analysis uses the curre
 
 ## Install in DeepSeek Harness
 
-Requires **Node.js 24+**, **Python 3.11+**, and a working DeepSeek Harness Desktop installation. LangGraph does not need to be installed for source analysis.
+Requires **Node.js 24+, Python 3.11+** and DeepSeek Harness Desktop. Git-source installation also needs Git. The release includes the built frontend, backend, worker and license notices; no source checkout or build is required.
 
-This repository is a monorepo containing the frontend, backend, and Python worker. The plugin entry point is in `plugins/harness`. Clone and build the full repository, then install that subdirectory as a local link. The repository root is not a standalone installable bundle.
+1. Open **Plugins → Experimental → More**, enable **Custom plugin markets**, then open **Discover**.
+2. Choose **Add index source** and paste:
+
+   `https://raw.githubusercontent.com/Cantarella-Fisalia/dsh-langgraph-canvas/main/market/index.json`
+
+3. Search **dsh-langgraph-canvas** (or **LangGraph**), check the version and source, and choose **Install**.
+4. Open a project workspace and select **Architecture** beside Chat / Trajectory. If the host requests a restart, fully quit and reopen it.
+
+This is our independently hosted community index, readable by the official desktop. Adding it is a one-time step per profile; this is not a claim of default official catalog inclusion. See [distribution and installation](docs/DISTRIBUTION.md).
+
+You can also download the prebuilt `.tgz` from [Releases](https://github.com/Cantarella-Fisalia/dsh-langgraph-canvas/releases/latest) and use **Plugins → Add plugin** with its absolute local path. Set `DSH_LANGGRAPH_CANVAS_PYTHON` before launching Harness if you need to select a Python 3.11+ interpreter.
+
+### Source development installation
+
+The source repository root is a private workspace. Only the generated release root is an installable bundle. For local development:
 
 ```powershell
 git clone https://github.com/Cantarella-Fisalia/dsh-langgraph-canvas.git
@@ -36,10 +50,6 @@ npm.cmd run build
 $pluginPath = (Resolve-Path ./plugins/harness).Path.Replace('\', '/')
 dsh plugin --profile desktop add "link:$pluginPath"
 ```
-
-If `dsh` is not on PATH, run the same plugin command using the DSH CLI bundled with the desktop application. Fully quit and reopen the desktop application, open your project workspace, and select “架构” (Architecture) beside the conversation and trace tabs. The plugin shares the current workspace directory and follows the Harness theme.
-
-If multiple Python versions are installed, set `DSH_LANGGRAPH_CANVAS_PYTHON` in the environment used to launch Harness to point to Python 3.11+. See the [user guide](USER_GUIDE.md) for detailed instructions and limitations. The interface and the linked guides are currently in Chinese.
 
 ## Upgrading from the previous name
 
