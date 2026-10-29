@@ -1,0 +1,53 @@
+{
+  "format": 1,
+  "title": {
+    "en": "DSH LangGraph Canvas — community index",
+    "zh": "LangGraph 画布 · 独立社区索引"
+  },
+  "description": {
+    "en": "Independent community distribution. Not affiliated with or endorsed by DeepSeek or LangChain.",
+    "zh": "独立维护的社区分发索引，与 DeepSeek、LangChain 官方无隶属或背书关系。"
+  },
+  "plugins": [
+    {
+      "name": "dsh-langgraph-canvas",
+      "title": {
+        "en": "DSH LangGraph Canvas",
+        "zh": "LangGraph 画布"
+      },
+      "description": {
+        "en": "Read multi-file Python LangGraph workflows, State, conditional routes and subgraphs. Review and confirm source edits inside DeepSeek Harness. Unofficial community plugin.",
+        "zh": "在 Harness 中直观查看跨文件 LangGraph 流程、State、条件分支与子图，AI 中文解读，审阅确认后修改源码。独立非官方社区插件。"
+      },
+      "author": "Cantarella-Fisalia",
+      "homepage": "https://github.com/Cantarella-Fisalia/dsh-langgraph-canvas#readme",
+      "repository": {
+        "url": "https://github.com/Cantarella-Fisalia/dsh-langgraph-canvas"
+      },
+      "metadata": {
+        "keywords": [
+          "langgraph",
+          "canvas",
+          "workflow",
+          "multi-agent",
+          "visualization",
+          "State",
+          "架构",
+          "画布",
+          "多智能体"
+        ]
+      },
+      "versions": [
+        {
+          "version": "0.9.0",
+          "publishTimestamp": 1793238880,
+          "source": {
+            "type": "git",
+            "url": "https://github.com/Cantarella-Fisalia/dsh-langgraph-canvas",
+            "commit": "4b10bde325490e64151b390112235c7b19143e64"
+          }
+        }
+      ]
+    }
+  ]
+}
