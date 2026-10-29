@@ -1,0 +1,61 @@
+{
+  "name": "dsh-langgraph-canvas",
+  "version": "0.9.0",
+  "private": false,
+  "description": "Unofficial community LangGraph canvas plugin for DeepSeek Harness. Independently maintained; not affiliated with or endorsed by DeepSeek or LangChain.",
+  "type": "module",
+  "main": "./plugins/harness/lib/index.js",
+  "exports": {
+    ".": "./plugins/harness/lib/index.js",
+    "./client": "./plugins/harness/client/client.js",
+    "./cordis.patch.yml": "./plugins/harness/cordis.patch.yml",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "plugins/harness/lib",
+    "plugins/harness/client",
+    "plugins/harness/cordis.patch.yml",
+    "apps/backend/src",
+    "apps/frontend/dist",
+    "packages/contracts/src",
+    "scripts/runtime",
+    "services/python-worker/src",
+    "third_party_licenses",
+    "examples",
+    "RELEASE_MANIFEST.json",
+    "THIRD_PARTY_NOTICES.md",
+    "USER_GUIDE.md",
+    "README.en.md"
+  ],
+  "keywords": [
+    "dsh-plugin",
+    "deepseek-harness",
+    "dsh",
+    "langgraph",
+    "ai-agents",
+    "multi-agent",
+    "visualization",
+    "developer-tools"
+  ],
+  "license": "MIT",
+  "dsh": {
+    "bundle": {
+      "patch": "./plugins/harness/cordis.patch.yml"
+    },
+    "client": {
+      "platform": "web",
+      "inject": []
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Cantarella-Fisalia/dsh-langgraph-canvas.git"
+  },
+  "homepage": "https://github.com/Cantarella-Fisalia/dsh-langgraph-canvas#readme",
+  "bugs": {
+    "url": "https://github.com/Cantarella-Fisalia/dsh-langgraph-canvas/issues"
+  },
+  "engines": {
+    "node": ">=24.0.0"
+  }
+}
