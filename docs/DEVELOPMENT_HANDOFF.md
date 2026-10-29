@@ -4,6 +4,10 @@
 
 ## 当前交付
 
+DISTRIBUTION-002：已定位用户使用“添加插件”的裸包名查询；现有 GitHub 分发尚无 npm 发布，因此不能按名称解析。中英文文档新增直接粘贴固定 Git 地址与 Discover 索引搜索的区别；线上索引复核仍通过。npm 认证 ENEEDAUTH，裸名称安装待登录发布；无源码／版本／生产 profile 变动。见 [记录](handoffs/main/DISTRIBUTION-002.md)。
+
+以下为历史交付。
+
 DISTRIBUTION-001：宿主 v0.9.0、主计划 v0.35，制作独立发布包与官方 Discover 可读取的社区索引。174 项回归、构建与仓库外安装后 12 项预检通过；发布时将后端／协议编译为 JavaScript，安装无需克隆或构建。GitHub v0.9.0 与 HTTPS 索引已公开；官方 0.2.1-rc.3 市场服务线上搜索、CLI 分别安装 tgz／固定 Git 源及安装后 12 项预检均通过。Electron GUI 仍待乙方复测，生产 profile 未改，见 [分发记录](handoffs/main/DISTRIBUTION-001.md)。
 
 以下为历史交付。

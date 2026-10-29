@@ -842,3 +842,7 @@ D022（2026-10-26）：以画布为主；State 左上角按需展开，删除架
 公开分发使用同一仓库 codex/distribution-v0.9.0 分支和 v0.9.0 标签保存生成包；主分支 market/index.json 采用官方 format 1，版本 Git 源固定 40 位提交，不使用移动分支。GitHub Release 提供 tgz 与 SHA256SUMS。官方 Discover 须一次性添加该 HTTPS 索引后搜索安装；默认目录收录由运营方决定，不宣称官方认证。发布包要求 Node 24+、Python 3.11+；Git 源安装另需 Git。
 
 状态：v0.9.0 发行包与索引已公开，官方 0.2.1-rc.3 市场服务线上搜索、CLI 安装 tgz／固定 Git 源，以及安装后 12 项预检通过；Electron GUI 交互仍待乙方复测。公开 URL、证据及边界见 docs/handoffs/main/DISTRIBUTION-001.md。不改生产 profile，不使用真实模型账号。
+
+### 16.1 DISTRIBUTION-002：安装入口澄清
+
+用户实际使用“添加插件”输入框；裸名称向 npm 查询，当前无 npm 发布会找不到。补齐固定 Git 地址直接安装说明，不将 Discover 索引搜索等同于裸名称安装。npm 认证检查返回 ENEEDAUTH；名称安装需负责人登录 npm 后再发布完整发行包。业务实现及 v0.9.0 不变，详见 docs/handoffs/main/DISTRIBUTION-002.md。

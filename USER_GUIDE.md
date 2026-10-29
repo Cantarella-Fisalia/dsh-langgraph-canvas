@@ -6,6 +6,14 @@
 
 ## 公开发行版安装
 
+如果使用“添加插件”输入框：当前未发布 npm 包，不能只填 dsh-langgraph-canvas；请粘贴完整 Git 安装地址：
+
+```text
+git+https://github.com/Cantarella-Fisalia/dsh-langgraph-canvas.git#4b10bde325490e64151b390112235c7b19143e64
+```
+
+该入口与 Discover 索引搜索不同。
+
 现在支持添加社区索引后在官方 Discover 搜索安装，或下载预构建 tgz 安装，不需自行构建。详见 [分发与安装](docs/DISTRIBUTION.md)；下文已有本地源码链接步骤供开发调试使用。
 
 ## 1. 先加载新版

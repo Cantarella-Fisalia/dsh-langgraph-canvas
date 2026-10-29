@@ -26,6 +26,18 @@ Static analysis does not execute user Python modules. AI analysis uses the curre
 
 Requires **Node.js 24+, Python 3.11+** and DeepSeek Harness Desktop. Git-source installation also needs Git. The release includes the built frontend, backend, worker and license notices; no source checkout or build is required.
 
+### Add plugin: paste the full installation address
+
+In **Plugins → Add plugin**, paste this complete value, then install and enable the plugin:
+
+```text
+git+https://github.com/Cantarella-Fisalia/dsh-langgraph-canvas.git#4b10bde325490e64151b390112235c7b19143e64
+```
+
+The bare name `dsh-langgraph-canvas` is **not available from npm yet**. That field resolves a package name through npm; it does not search our Discover index. The repository main branch is a source workspace, so keep the commit suffix above.
+
+### Discover: add the index before searching
+
 1. Open **Plugins → Experimental → More**, enable **Custom plugin markets**, then open **Discover**.
 2. Choose **Add index source** and paste:
 

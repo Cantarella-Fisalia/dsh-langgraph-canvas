@@ -28,6 +28,18 @@
 
 需要 **Node.js 24+、Python 3.11+** 和 DeepSeek Harness 桌面端。通过 Git 源安装还需 Git。发布包已包含构建好的前端、后端、worker 与许可，不需自行克隆或构建；源码解析无需安装 LangGraph。
 
+### “添加插件”：直接粘贴安装地址
+
+在 **插件 → 添加插件** 的输入框粘贴以下完整内容，然后安装并启用：
+
+```text
+git+https://github.com/Cantarella-Fisalia/dsh-langgraph-canvas.git#4b10bde325490e64151b390112235c7b19143e64
+```
+
+**目前尚未发布 npm 包，不能在这里仅输入 `dsh-langgraph-canvas` 查找安装。** 裸包名会向 npm 查询，不会读取我们的 Discover 索引。仓库 main 是源码工作区，请保留上面的固定提交后缀。
+
+### “发现／Discover”：先添加索引，再搜索
+
 1. 打开 **插件 → 实验性插件 → 更多**，启用 **自定义插件市场（Custom plugin markets）**，进入 **发现（Discover）**。
 2. 点击 **添加索引源（Add index source）**，粘贴：
 

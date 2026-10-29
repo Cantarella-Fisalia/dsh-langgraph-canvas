@@ -2,7 +2,17 @@
 
 版本：0.9.0（开发预览）。本项目独立维护，与 DeepSeek、LangChain 官方无关。
 
-## 在官方桌面中搜索安装
+## “添加插件”与“Discover”不是同一个检索入口
+
+“添加插件”输入裸包名时由 npm registry 查找；当前未发布 npm 包，仅输入 dsh-langgraph-canvas 会找不到。可在该输入框直接粘贴已验证的固定 Git 地址安装：
+
+```text
+git+https://github.com/Cantarella-Fisalia/dsh-langgraph-canvas.git#4b10bde325490e64151b390112235c7b19143e64
+```
+
+此方式不需添加市场索引，但需要 Git 和可访问 GitHub 的网络。若要直接按裸包名安装，仍需维护者完成 npm 登录并发布完整发行包；GitHub Release 或 topic 本身不会变成 npm 包。
+
+## 在官方桌面 Discover 中搜索安装
 
 按官方 [插件市场指南](https://deepseek-harness.github.io/deepseek-harness/en/guide/plugin-market)，启用“自定义插件市场”，在 Discover 添加下面的索引，然后搜索 dsh-langgraph-canvas：
 
