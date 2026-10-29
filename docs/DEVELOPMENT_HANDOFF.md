@@ -4,7 +4,7 @@
 
 ## 当前交付
 
-DISTRIBUTION-001：宿主 v0.9.0、主计划 v0.35，制作独立发布包与官方 Discover 可读取的社区索引。174 项回归、构建与仓库外安装后 12 项预检通过；发布时将后端／协议编译为 JavaScript，安装无需克隆或构建。公开版本与索引验证进行中，见 [分发记录](handoffs/main/DISTRIBUTION-001.md)。
+DISTRIBUTION-001：宿主 v0.9.0、主计划 v0.35，制作独立发布包与官方 Discover 可读取的社区索引。174 项回归、构建与仓库外安装后 12 项预检通过；发布时将后端／协议编译为 JavaScript，安装无需克隆或构建。GitHub v0.9.0 与 HTTPS 索引已公开；官方 0.2.1-rc.3 市场服务线上搜索、CLI 分别安装 tgz／固定 Git 源及安装后 12 项预检均通过。Electron GUI 仍待乙方复测，生产 profile 未改，见 [分发记录](handoffs/main/DISTRIBUTION-001.md)。
 
 以下为历史交付。
 

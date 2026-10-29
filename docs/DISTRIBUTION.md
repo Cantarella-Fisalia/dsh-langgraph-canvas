@@ -37,3 +37,7 @@ npm.cmd run release:verify
 输出位于 .tmp/releases/版本/。verify 将 tarball 安装到仓库外的隔离目录，校验入口、客户端导出、清单和资源完整性，执行真实 Python 与事务预检；不调用用户模型。发布时将 latest.json 指定的 staging 目录提交到新的分发分支并打版本标签，上传 tgz 与校验文件，再用该分发提交更新索引。不可把源码子目录直接 npm pack 当成完整发行版。
 
 验证范围和实际发布证据见 [DISTRIBUTION-001](handoffs/main/DISTRIBUTION-001.md)。隔离宿主／打包测试不替代乙方的真实 Electron 桌面交互验收。
+
+## 0.9.0 验证结果
+
+2026-10-29 已公开 [v0.9.0](https://github.com/Cantarella-Fisalia/dsh-langgraph-canvas/releases/tag/v0.9.0)。官方桌面 0.2.1-rc.3 的市场服务可搜索线上索引；官方 CLI 的 tgz 与 Git 安装成功，安装后 12 项运行预检通过。GUI 交互与真实模型验收由乙方继续进行。
